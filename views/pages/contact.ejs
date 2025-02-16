@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto | DeliCakes Delia</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/css.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/img/Logo.png" type="image/png"> 
+</head>
+<body class="contact-page"> <!-- Clase específica para la página de contacto -->
+  <!-- Header with Navigation -->
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <ul class="nav">
+          <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+          <li><a href="/services"><i class="fas fa-cake"></i> Productos</a></li>
+          <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
+          <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content Section -->
+  <main>
+    <div class="portada">
+      <section class="portada-content">
+        <h2><span class="brand-name-serv">Contacto</span></h2>
+        <p class="contact-descript">
+          En <strong>DeliCakes Delia</strong>, tu satisfacción es nuestra prioridad. Estamos aquí para responder a tus preguntas, 
+          escuchar tus sugerencias y ayudarte a disfrutar de nuestros deliciosos productos. Contáctanos para hacer un pedido, obtener más 
+          información sobre nuestros postres o cualquier otra consulta. ¡Será un placer ayudarte!
+        </p>
+        <div class="contacts-container">
+          <% contact.forEach(item => { %>
+            <div class="contact-item">
+              <h3 class="contact-name">Nombre: <%= item.name %></h3>
+              <p class="contact-email">Email: <%= item.email %></p> 
+              <p class="contact-phone">Teléfono: <%= item.telefono %></p>
+            </div>
+          <% }); %>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 DeliCakes Delia. Todos los derechos reservados.</p>
+  </footer>
+</body>
+</html>
