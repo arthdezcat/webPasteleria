@@ -13,21 +13,14 @@
   <!-- Header with Navigation -->
   <header>
     <nav>
-      <a href="/admin">
-        <i class="fas fa-tachometer-alt"></i> Inicio
-      </a>
-      <a href="/admin/services">
-        <i class="fas fa-cake"></i> Pastelerías
-      </a>
-      <a href="/admin/galeria">
-        <i class="fas fa-images"></i> Galería
-      </a>
-      <a href="/admin/contact">
-        <i class="fas fa-address-book"></i> Contacto
-      </a>
-      <a href="/logout">
-        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-      </a>
+      <ul>
+        <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
+        <li><a href="/admin/homeinfo"><i class="fas fa-brush"></i> Inicio</a></li>
+        <li><a href="/admin/services"><i class="fas fa-store"></i> Pastelerías</a></li>
+        <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
+        <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+      </ul>
     </nav>
   </header>
   
@@ -42,6 +35,7 @@
           <div class="admin-box">
             <h3>Gestión de Servicios</h3>
             <p>Administra las pastelerías registradas.</p>
+      <button type="button" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
             <a href="/admin/services" class="admin-link">Ir a Pastelerías</a>
           </div>
           <div class="admin-box">
@@ -73,5 +67,6 @@
       </section>
     </div>
   </main>
+  <script src="/js/theme-toggle.js"></script>
 </body>
 </html>
