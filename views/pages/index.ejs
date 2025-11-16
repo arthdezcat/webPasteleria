@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= (homeInfo && homeInfo.brandName) || 'Pastelería' %></title>
+  <title><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></title>
   <link rel="stylesheet" href="/css/styles.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="icon" href="<%= homeInfo && homeInfo.icon && homeInfo.icon.url ? homeInfo.icon.url : '/img/Logo.png' %>" type="image/png"> 
@@ -13,9 +13,6 @@
   <header>
     <nav class="navbar">
       <div class="container">
-        <% if (homeInfo && homeInfo.logo && homeInfo.logo.url) { %>
-          <img class="logo-img" src="<%= homeInfo.logo.url %>" alt="Logo" />
-        <% } %>
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
           <li><a href="/services"><i class="fas fa-cake"></i> Pastelerías</a></li>
@@ -32,7 +29,7 @@
       <!-- Add a Hero Image or Logo -->
       <section class="portada-content-indice">
         <div class="content-header">
-          <h2 class="brand-name">Bienvenido a <span><%= (homeInfo && homeInfo.brandName) || 'Pastelería' %></span></h2>
+          <h2 class="brand-name">Bienvenido a <span><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></span></h2>
           <p class="intro-text"><%= (homeInfo && homeInfo.tagline) || 'Tradición y sabor en cada bocado' %></p>
           <p class="intro-text"><%= (homeInfo && homeInfo.descriptionHome) || '' %></p>
         </div>
@@ -57,8 +54,8 @@
         <!-- About Section -->
         <div class="about-text">
           <h3 class="services-title">Sobre Nosotros</h3>
-          <p>
-            En <strong><%= (homeInfo && homeInfo.brandName) || 'Nuestra Pastelería' %></strong>, nuestra pasión es hacer que cada momento sea especial. Ya sea para un cumpleaños, boda o simplemente para consentirte, nos encargamos de ofrecerte los postres más sabrosos y frescos. ¡Ven y disfruta de una experiencia única de sabor!
+            <p>
+            En <strong><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></strong>, nuestra pasión es hacer que cada momento sea especial. Ya sea para un cumpleaños, boda o simplemente para consentirte, nos encargamos de ofrecerte los postres más sabrosos y frescos. ¡Ven y disfruta de una experiencia única de sabor!
           </p>
         </div>
       </section>
@@ -66,7 +63,7 @@
   </main>
 
   <footer>
-    <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'Pastelería' %></p>
+    <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></p>
   </footer>
 </body>
 </html>
