@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeliCakes Delia | Admin Panel</title>
+  <title><%= (homeInfo && homeInfo.brandName) || 'Pastelería' %> | Admin</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/css.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
@@ -37,7 +37,7 @@
     <div class="admin-container">
       <section class="admin-content">
         <h2 class="admin-title">Panel de Administración</h2>
-        <p >Bienvenido al panel de administración. Aquí puedes gestionar los productos, la galería y los contactos.</p>
+        <p>Bienvenido al panel de administración de <strong><%= (homeInfo && homeInfo.brandName) || 'Pastelería' %></strong>. Gestiona pastelerías, galería, contactos y la presentación pública.</p>
         <div class="admin-dashboard">
           <div class="admin-box">
             <h3>Gestión de Servicios</h3>
@@ -53,6 +53,16 @@
             <h3>Gestión de Contactos</h3>
             <p>Administra los datos de los contactos.</p>
             <a href="/admin/contact" class="admin-link">Ir a Contactos</a>
+          </div>
+          <div class="admin-box">
+            <h3>Diseño de Inicio</h3>
+            <p>Configura marca, textos y fondos de la web.</p>
+            <a href="/admin/homeinfo" class="admin-link">Configurar Inicio</a>
+          </div>
+          <div class="admin-box">
+            <h3>Usuarios Administradores</h3>
+            <p>Revisa y gestiona usuarios del panel.</p>
+            <a href="/admin/users" class="admin-link">Administrar Usuarios</a>
           </div>
           <div class="admin-box">
             <h3>Ver diseños</h3>

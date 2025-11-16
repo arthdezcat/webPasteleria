@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galería | DeliCakes Delia</title>
+  <title>Galería | <%= (homeInfo && homeInfo.brandName) || 'Pastelería' %></title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/css.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link rel="icon" href="/img/Logo.png" type="image/png"> 
+  <link rel="icon" href="<%= homeInfo && homeInfo.icon && homeInfo.icon.url ? homeInfo.icon.url : '/img/Logo.png' %>" type="image/png"> 
 </head>
-<body class="galeri-page"> <!-- Clase específica para la página de galería -->
+<body class="galeri-page" style="background-image:url('<%= homeInfo && homeInfo.galeriBg && homeInfo.galeriBg.url ? homeInfo.galeriBg.url : '/img/galeria.jpg' %>')"> <!-- Clase específica para la página de galería -->
   <!-- Header with Navigation -->
   <header>
     <nav class="navbar">
@@ -28,7 +28,7 @@
   <main>
     <div class="portada">
       <section class="portada-content">
-        <h2><span class="brand-name-serv">Galería</span></h2>
+        <h2><span class="brand-name-serv"><%= (homeInfo && homeInfo.brandName) || 'Pastelería' %> — Galería</span></h2>
         <p class="contact-descript">
           Explora nuestra galería de delicias. Desde pasteles personalizados hasta postres.
         </p>

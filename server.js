@@ -41,6 +41,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// Cargar información de marca y fondos para todas las vistas
+const { loadHomeInfo } = require('./controllers/homeInfoPublic');
+app.use(loadHomeInfo);
+
 // Rutas públicas
 app.use('/', require('./routes/pages')); // Rutas para la página pública
 

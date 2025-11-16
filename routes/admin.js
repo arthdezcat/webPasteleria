@@ -5,6 +5,8 @@ const contactController = require('../controllers/contactControllers');
 const galeriaController = require('../controllers/galeriControllers');
 const authMiddleware = require('../middlewares/authMiddleware');
 const upload = require('../middlewares/uploadImage');
+const homeInfoController = require('../controllers/homeInfoControllers');
+const userAdminController = require('../controllers/userAdminControllers');
 
 // Proteger rutas del panel de administración
 router.use(authMiddleware.isAuthenticated);
@@ -25,6 +27,13 @@ router.get('/galeria', async (req, res) => {
 });
 
 router.get('/', (req, res) => res.render('admin/index'));
+// Configuración de Home / branding
+router.get('/homeinfo', homeInfoController.getAdminHomeInfo);
+router.post('/homeinfo/text', homeInfoController.updateText);
+router.post('/homeinfo/image', upload.single('imageFile'), homeInfoController.updateImage);
+// Usuarios administradores
+router.get('/users', userAdminController.listUsers);
+router.post('/users/delete/:id', userAdminController.deleteUser);
 router.post('/services/add', upload.single('imageFile'), serviceController.addService);
 router.post('/services/delete/:id', serviceController.deleteService);
 router.post('/services/update/:id', upload.single('imageFile'), serviceController.updateService);

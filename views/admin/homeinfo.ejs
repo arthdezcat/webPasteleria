@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Configuración de Inicio</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body class="admin-page">
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
+        <li><a href="/admin/services"><i class="fas fa-store"></i> Pastelerías</a></li>
+        <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
+        <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
+        <li><a href="/admin/homeinfo"><i class="fas fa-brush"></i> Inicio</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="admin-container">
+    <div class="admin-content">
+      <h1 class="admin-title">Configuración de Inicio</h1>
+      <p>Personaliza la marca, mensajes y fondos de las páginas públicas.</p>
+    </div>
+
+    <div class="admin-container-servi">
+      <section class="add-service">
+        <h2>Textos y Marca</h2>
+        <form class="service-form-admin" action="/admin/homeinfo/text" method="POST">
+          <div class="form-group">
+            <label>Nombre de la marca</label>
+            <input type="text" name="brandName" value="<%= (info && info.brandName) || (homeInfo && homeInfo.brandName) || '' %>" />
+          </div>
+          <div class="form-group">
+            <label>Lema</label>
+            <input type="text" name="tagline" value="<%= (info && info.tagline) || (homeInfo && homeInfo.tagline) || '' %>" />
+          </div>
+          <div class="form-group">
+            <label>Descripción de inicio</label>
+            <textarea name="descriptionHome"><%= (info && info.descriptionHome) || (homeInfo && homeInfo.descriptionHome) || '' %></textarea>
+          </div>
+          <div class="form-group">
+            <label>WhatsApp</label>
+            <input type="text" name="whatsapp" value="<%= info && info.whatsapp ? info.whatsapp : '' %>" />
+          </div>
+          <div class="form-group">
+            <label>Facebook</label>
+            <input type="text" name="facebook" value="<%= info && info.facebook ? info.facebook : '' %>" />
+          </div>
+          <div class="form-group">
+            <label>Instagram</label>
+            <input type="text" name="instagram" value="<%= info && info.instagram ? info.instagram : '' %>" />
+          </div>
+          <button type="submit" class="submit-btn">Guardar textos</button>
+        </form>
+      </section>
+
+      <section class="manage-services">
+        <h2>Imágenes (Logo / Icono / Fondos)</h2>
+        <div>
+          <p>Logo actual:</p>
+          <% if (info && info.logo && info.logo.url) { %>
+            <img src="<%= info.logo.url %>" alt="Logo" style="max-width:120px;border-radius:6px;"/>
+          <% } %>
+        </div>
+        <form class="service-form-admin" action="/admin/homeinfo/image" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="targetField" value="logo" />
+          <div class="form-group">
+            <label>Subir nuevo logo (archivo o URL)</label>
+            <input type="file" name="imageFile" accept="image/*" />
+            <input type="text" name="imageUrl" placeholder="o URL de imagen" />
+          </div>
+          <button type="submit" class="submit-btn">Actualizar logo</button>
+        </form>
+
+        <div style="margin-top:20px">
+          <p>Icono actual:</p>
+          <% if (info && info.icon && info.icon.url) { %>
+            <img src="<%= info.icon.url %>" alt="Icono" style="max-width:64px;border-radius:6px;"/>
+          <% } %>
+        </div>
+        <form class="service-form-admin" action="/admin/homeinfo/image" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="targetField" value="icon" />
+          <div class="form-group">
+            <label>Subir nuevo icono (archivo o URL)</label>
+            <input type="file" name="imageFile" accept="image/*" />
+            <input type="text" name="imageUrl" placeholder="o URL de imagen" />
+          </div>
+          <button type="submit" class="submit-btn">Actualizar icono</button>
+        </form>
+
+        <hr style="margin:20px 0"/>
+
+        <div>
+          <p>Fondo Inicio:</p>
+          <% if (info && info.homeBg && info.homeBg.url) { %>
+            <img src="<%= info.homeBg.url %>" alt="Fondo Inicio" style="max-width:240px;border-radius:6px;"/>
+          <% } %>
+        </div>
+        <form class="service-form-admin" action="/admin/homeinfo/image" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="targetField" value="homeBg" />
+          <div class="form-group">
+            <label>Subir nuevo fondo de Inicio</label>
+            <input type="file" name="imageFile" accept="image/*" />
+            <input type="text" name="imageUrl" placeholder="o URL de imagen" />
+          </div>
+          <button type="submit" class="submit-btn">Actualizar fondo Inicio</button>
+        </form>
+
+        <div>
+          <p>Fondo Pastelerías:</p>
+          <% if (info && info.servicesBg && info.servicesBg.url) { %>
+            <img src="<%= info.servicesBg.url %>" alt="Fondo Pastelerías" style="max-width:240px;border-radius:6px;"/>
+          <% } %>
+        </div>
+        <form class="service-form-admin" action="/admin/homeinfo/image" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="targetField" value="servicesBg" />
+          <div class="form-group">
+            <label>Subir nuevo fondo de Pastelerías</label>
+            <input type="file" name="imageFile" accept="image/*" />
+            <input type="text" name="imageUrl" placeholder="o URL de imagen" />
+          </div>
+          <button type="submit" class="submit-btn">Actualizar fondo Pastelerías</button>
+        </form>
+
+        <div>
+          <p>Fondo Galería:</p>
+          <% if (info && info.galeriBg && info.galeriBg.url) { %>
+            <img src="<%= info.galeriBg.url %>" alt="Fondo Galería" style="max-width:240px;border-radius:6px;"/>
+          <% } %>
+        </div>
+        <form class="service-form-admin" action="/admin/homeinfo/image" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="targetField" value="galeriBg" />
+          <div class="form-group">
+            <label>Subir nuevo fondo de Galería</label>
+            <input type="file" name="imageFile" accept="image/*" />
+            <input type="text" name="imageUrl" placeholder="o URL de imagen" />
+          </div>
+          <button type="submit" class="submit-btn">Actualizar fondo Galería</button>
+        </form>
+
+        <div>
+          <p>Fondo Contactos:</p>
+          <% if (info && info.contactBg && info.contactBg.url) { %>
+            <img src="<%= info.contactBg.url %>" alt="Fondo Contactos" style="max-width:240px;border-radius:6px;"/>
+          <% } %>
+        </div>
+        <form class="service-form-admin" action="/admin/homeinfo/image" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="targetField" value="contactBg" />
+          <div class="form-group">
+            <label>Subir nuevo fondo de Contactos</label>
+            <input type="file" name="imageFile" accept="image/*" />
+            <input type="text" name="imageUrl" placeholder="o URL de imagen" />
+          </div>
+          <button type="submit" class="submit-btn">Actualizar fondo Contactos</button>
+        </form>
+
+      </section>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'Pastelería' %></p>
+  </footer>
+</body>
+</html>
