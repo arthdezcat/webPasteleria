@@ -1,6 +1,7 @@
 const Service = require('../models/Service');
 const fs = require('fs');
 const path = require('path');
+const { cloudinary } = require('../middlewares/cloudinary');
 
 // Obtener todos los servicios
 exports.getServices = async (req, res) => {
@@ -17,21 +18,38 @@ exports.getServices = async (req, res) => {
 // Controlador para agregar un servicio
 exports.addService = async (req, res) => {
   try {
-    const { title, description, price, imageUrl } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : imageUrl; // Ruta de la imagen o URL
+    const { title, description, price, imageUrl, address, phone, schedule } = req.body;
+    const image = (req.file && req.file.path) ? req.file.path : imageUrl; // URL Cloudinary o URL directa
 
-    const newService = new Service({
-      title,
-      description,
-      price,
-      image,
-    });
-
+    const newService = new Service({ title, description, price, address, phone, schedule, image });
     await newService.save();
     res.redirect('/admin/services');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al agregar el servicio.');
+    res.status(500).send('Error al agregar la pastelería.');
+  }
+};
+
+// Actualizar un servicio
+exports.updateService = async (req, res) => {
+  try {
+    const { id } = req.params;
+    let image = req.body.imageUrl; // por si se pasa URL
+    const service = await Service.findById(id);
+    if (req.file && req.file.path) {
+      image = req.file.path; // URL Cloudinary
+      // Si el anterior era Cloudinary, borrar
+      if (service && service.image && service.image.includes('cloudinary.com')) {
+        const publicId = service.image.split('/').slice(-1)[0].split('.')[0];
+        try { await cloudinary.uploader.destroy('webpasteleria/' + publicId); } catch (e) { console.error('Cloudinary delete error:', e); }
+      }
+    }
+    const { title, description, price, address, phone, schedule } = req.body;
+    await Service.findByIdAndUpdate(id, { title, description, price, address, phone, schedule, image });
+    res.redirect('/admin/services');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al actualizar la pastelería');
   }
 };
 
@@ -47,14 +65,23 @@ exports.deleteService = async (req, res) => {
       return res.redirect('/admin/services');
     }
 
-    // Eliminar la imagen del sistema de archivos (si existe)
+    // Eliminar imagen remota/local según corresponda
     if (service.image) {
-      const imagePath = path.join(__dirname, '..', 'public', service.image);
-      fs.unlink(imagePath, (err) => {
-        if (err) {
-          console.error('Error al eliminar la imagen:', err);
+      if (service.image.includes('cloudinary.com')) {
+        try {
+          const publicId = service.image.split('/').slice(-1)[0].split('.')[0];
+          await cloudinary.uploader.destroy('webpasteleria/' + publicId);
+        } catch (e) {
+          console.error('Error al eliminar en Cloudinary:', e);
         }
-      });
+      } else {
+        const imagePath = path.join(__dirname, '..', 'public', service.image);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error('Error al eliminar la imagen:', err);
+          }
+        });
+      }
     }
 
     // Eliminar el servicio de la base de datos

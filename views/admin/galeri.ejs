@@ -12,7 +12,7 @@
   <header>
     <nav>
       <a href="/admin"><i class="fas fa-tachometer-alt"></i> Inicio</a>
-      <a href="/admin/services"><i class="fas fa-cake"></i> Productos</a>
+      <a href="/admin/services"><i class="fas fa-cake"></i> Pastelerías</a>
       <a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a>
       <a href="/admin/contact"><i class="fas fa-address-book"></i> Contacto</a>
       <a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
@@ -33,8 +33,8 @@
             <textarea id="description" name="description" required></textarea>
           </div>
           <div class="form-group">
-            <label for="image">Imagen:</label>
-            <input type="file" id="image" name="image" accept="image/*">
+            <label for="imageFile">Imagen:</label>
+            <input type="file" id="imageFile" name="imageFile" accept="image/*">
             <label for="imageUrl">o URL de la Imagen:</label>
             <input type="url" id="imageUrl" name="imageUrl">
           </div>
@@ -45,14 +45,21 @@
       <section class="manage-gallery">
         <h2>Galería Actual</h2>
         <ul class="gallery-list-admin">
-          <% galeria.forEach(galeria => { %>
+          <% galeria.forEach(g => { %>
             <li class="gallery-item-admin">
               <div class="gallery-details-admin">
-                <strong><%= galeria.title %></strong>
-                <p><%= galeria.description %></p>
+                <strong><%= g.title %></strong>
+                <p><%= g.description %></p>
               </div>
-              <form action="/admin/galeria/delete/<%= galeria._id %>" method="post">
+              <form action="/admin/galeria/delete/<%= g._id %>" method="post">
                 <button type="submit" class="delete-btn">Eliminar</button>
+              </form>
+              <form action="/admin/galeria/update/<%= g._id %>" method="post" enctype="multipart/form-data" class="gallery-form" style="margin-top:8px;">
+                <input type="text" name="title" value="<%= g.title %>" required>
+                <input type="text" name="description" value="<%= g.description %>" required>
+                <input type="file" name="imageFile" accept="image/*">
+                <input type="url" name="imageUrl" placeholder="o URL de imagen">
+                <button type="submit" class="submit-btn">Actualizar</button>
               </form>
             </li>
           <% }); %>
