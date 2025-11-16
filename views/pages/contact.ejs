@@ -14,6 +14,9 @@
   <header>
     <nav class="navbar">
       <div class="container">
+        <% if (homeInfo && homeInfo.logo && homeInfo.logo.url) { %>
+          <img class="logo-img" src="<%= homeInfo.logo.url %>" alt="Logo" />
+        <% } %>
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
           <li><a href="/services"><i class="fas fa-cake"></i> Productos</a></li>
