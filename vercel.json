@@ -7,7 +7,7 @@
       { "src": "/(.*)", "dest": "server.js" }
     ],
  "env": {
-"MONGO_URI":"mongodb+srv://dh0538463:4bdmpviv7zT7yhAf@cluster0.4t6so.mongodb.net/Pasteleria?retryWrites=true&w=majority&appName=Cluster0",
+"MONGO_URI":"mongodb+srv://artemhdezcst2001_db_user:0xIdqubsIYh4usXR@cluster0.fo4cd7t.mongodb.net/?appName=Cluster0",
 "JWT_SECRET":"tu_secreto_para_mi",
 "KEY_SECRET":"mi_secreto_esta_con_tigo",
 "PORT":"3001",
