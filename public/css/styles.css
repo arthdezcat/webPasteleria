@@ -48,14 +48,17 @@ body.galeri-page {
 .galeria-item {
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 18px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
 .galeria-image {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
   border-radius: 8px;
 }
 
@@ -262,11 +265,11 @@ nav a:hover {
 
 .service-item {
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #eee;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s;
 }
 
 .service-item:hover {
@@ -275,18 +278,18 @@ nav a:hover {
 
 .service-image {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
 }
 
 .service-info {
-  padding: 20px;
+  padding: 16px;
 }
 
 .service-title {
-  font-size: 24px;
+  font-size: 20px;
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .service-description {
@@ -641,6 +644,72 @@ textarea {
 
 .submit-btn:hover {
   background-color: #2ecc71;
+}
+
+/* Responsive form utilities */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+.form-row.full {
+  grid-column: 1 / -1;
+}
+.form-note {
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
+}
+
+@media (max-width: 768px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .admin-container-servi { flex-direction: column; padding: 10px; }
+}
+
+/* Improve layout for public grids */
+@media (max-width: 900px) {
+  .galeria-container { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .services-container { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .galeria-image, .service-image { height: 140px; }
+  .avatar-preview { width:56px; height:56px; }
+}
+
+/* Small tweaks for admin forms */
+.card { background:#fff; padding:18px; border-radius:8px; box-shadow:0 6px 16px rgba(0,0,0,0.08); }
+.field-inline { display:flex; gap:8px; align-items:center; }
+.label-muted { font-size:14px; color:#555; margin-bottom:6px; }
+.avatar-preview { width:64px; height:64px; border-radius:8px; object-fit:cover; border:1px solid #ddd; }
+
+/* Inline field error */
+.field-error { color:#b91c1c; font-size:13px; margin-top:6px; }
+
+/* Public contact cards */
+.contact-item.card { display:block; background:#fff; padding:16px; border-radius:8px; box-shadow:0 6px 14px rgba(0,0,0,0.06); }
+.contact-item .avatar-preview { width:72px; height:72px; border-radius:12px; }
+.contact-item h3 { margin:0 0 6px 0; font-size:18px; }
+.contact-item p { margin:4px 0; color:#444; }
+
+/* Improved contact public layout */
+.contact-meta { margin:6px 0; font-size:15px; color:#333; display:flex; align-items:center; gap:8px; }
+.social-link { color:inherit; text-decoration:none; display:inline-flex; align-items:center; gap:8px; }
+.social-link i { color:#f39c12; min-width:18px; }
+.contact-actions .social-btn { padding:8px 10px; border-radius:8px; font-size:14px; display:inline-flex; align-items:center; justify-content:center; width:auto; }
+.avatar-preview { background: linear-gradient(135deg,#f39c12,#f6d365); color:#fff; }
+
+@media (max-width:768px) {
+  .contacts-container { grid-template-columns: 1fr; padding:12px; }
+  .contact-item { width: 100%; }
+}
+
+@media (max-width:768px) {
+  .contacts-container { grid-template-columns: 1fr; padding:12px; }
 }
 
 /* Manage Gallery Section */

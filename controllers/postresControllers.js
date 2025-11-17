@@ -3,6 +3,7 @@ const Contact = require('../models/Contact');
 const fs = require('fs');
 const path = require('path');
 const { cloudinary } = require('../middlewares/cloudinary');
+const { validationResult } = require('express-validator');
 
 // Página pública: listar postres
 exports.getPostres = async (req, res) => {
@@ -19,20 +20,32 @@ exports.getPostres = async (req, res) => {
 // Admin: agregar postre
 exports.addPostre = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const postres = await Postre.find();
+      return res.status(400).render('admin/postres', { postres, errors: errors.array(), old: req.body });
+    }
     const { title, description, price, imageUrl } = req.body;
     const image = (req.file && req.file.path) ? req.file.path : imageUrl;
     const nuevo = new Postre({ title, description, price, image });
     await nuevo.save();
+    req.flash('success_msg', 'Postre creado correctamente');
     res.redirect('/admin/postres');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al agregar el postre');
+    req.flash('error_msg', 'Error al agregar el postre');
+    res.redirect('/admin/postres');
   }
 };
 
 // Admin: actualizar postre
 exports.updatePostre = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const postres = await Postre.find();
+      return res.status(400).render('admin/postres', { postres, errors: errors.array(), old: req.body });
+    }
     const { id } = req.params;
     let image = req.body.imageUrl;
     const p = await Postre.findById(id);
@@ -45,10 +58,12 @@ exports.updatePostre = async (req, res) => {
     }
     const { title, description, price } = req.body;
     await Postre.findByIdAndUpdate(id, { title, description, price, image });
+    req.flash('success_msg', 'Postre actualizado correctamente');
     res.redirect('/admin/postres');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al actualizar el postre');
+    req.flash('error_msg', 'Error al actualizar el postre');
+    res.redirect('/admin/postres');
   }
 };
 
@@ -58,7 +73,7 @@ exports.deletePostre = async (req, res) => {
     const { id } = req.params;
     const p = await Postre.findById(id);
     if (!p) {
-      req.flash && req.flash('error', 'Postre no encontrado.');
+      req.flash && req.flash('error_msg', 'Postre no encontrado.');
       return res.redirect('/admin/postres');
     }
     if (p.image) {
@@ -77,9 +92,11 @@ exports.deletePostre = async (req, res) => {
       }
     }
     await Postre.findByIdAndDelete(id);
+    req.flash('success_msg', 'Postre eliminado');
     res.redirect('/admin/postres');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al eliminar el postre');
+    req.flash('error_msg', 'Error al eliminar el postre');
+    res.redirect('/admin/postres');
   }
 };

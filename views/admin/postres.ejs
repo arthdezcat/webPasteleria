@@ -34,15 +34,74 @@
 
   <main>
     <div class="admin-container-postres">
-      <section class="add-postre">
+      <section class="add-postre card">
         <h1>Agregar Postre</h1>
-        <form action="/admin/postres/add" method="post" enctype="multipart/form-data" class="postre-form">
-          <input type="text" name="title" placeholder="Título" required>
-          <textarea name="description" placeholder="Descripción" required></textarea>
-          <input type="number" step="0.01" name="price" placeholder="Precio (opcional)">
-          <input type="file" name="imageFile" accept="image/*">
-          <input type="url" name="imageUrl" placeholder="o URL de imagen">
-          <button type="submit" class="submit-btn">Añadir Postre</button>
+        <% if (typeof errors !== 'undefined' && errors && errors.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#fff6f6;border-left:4px solid #e74c3c;color:#611a15;">
+            <ul style="margin:0 0 0 18px;">
+              <% errors.forEach(err => { %>
+                <li><%= err.msg %></li>
+              <% }) %>
+            </ul>
+          </div>
+        <% } %>
+        <% if (success_msg && success_msg.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#e6ffed;border-left:4px solid #2ecc71;color:#064e3b;">
+            <% success_msg.forEach(m => { %>
+              <div><%= m %></div>
+            <% }) %>
+          </div>
+        <% } %>
+        <% if (error_msg && error_msg.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#fff1f0;border-left:4px solid #e74c3c;color:#611a15;">
+            <% error_msg.forEach(m => { %>
+              <div><%= m %></div>
+            <% }) %>
+          </div>
+        <% } %>
+        <form action="/admin/postres/add" method="post" enctype="multipart/form-data" class="service-form-admin">
+          <div class="form-grid">
+            <div class="form-row">
+              <label class="label-muted" for="title">Título</label>
+              <% const errTitle = (errors || []).find(e => e.param === 'title'); %>
+              <input id="title" type="text" name="title" placeholder="Título" required value="<%= old && old.title ? old.title : '' %>">
+              <% if (errTitle) { %>
+                <div class="field-error"><%= errTitle.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="price">Precio (opcional)</label>
+              <% const errPrice = (errors || []).find(e => e.param === 'price'); %>
+              <input id="price" type="number" step="0.01" name="price" placeholder="0.00" value="<%= old && old.price ? old.price : '' %>">
+              <% if (errPrice) { %>
+                <div class="field-error"><%= errPrice.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row full">
+              <label class="label-muted" for="description">Descripción</label>
+              <% const errDescription = (errors || []).find(e => e.param === 'description'); %>
+              <textarea id="description" name="description" placeholder="Descripción" required><%= old && old.description ? old.description : '' %></textarea>
+              <% if (errDescription) { %>
+                <div class="field-error"><%= errDescription.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="imageFile">Imagen (archivo)</label>
+              <input id="imageFile" type="file" name="imageFile" accept="image/*">
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="imageUrl">o URL de imagen</label>
+              <input id="imageUrl" type="url" name="imageUrl" placeholder="https://..." value="<%= old && old.imageUrl ? old.imageUrl : '' %>">
+            </div>
+
+            <div class="form-row full">
+              <button type="submit" class="submit-btn">Añadir Postre</button>
+            </div>
+          </div>
         </form>
       </section>
 
@@ -50,21 +109,50 @@
         <h2>Postres Registrados</h2>
         <ul class="postre-list-admin">
           <% postres.forEach(p => { %>
-            <li class="postre-item-admin">
-              <strong><%= p.title %></strong>
-              <p><%= p.description %></p>
-              <% if (p.price) { %><p>Precio: <%= p.price %></p><% } %>
-              <form action="/admin/postres/delete/<%= p._id %>" method="post">
-                <button type="submit" class="delete-btn">Eliminar</button>
-              </form>
-              <form action="/admin/postres/update/<%= p._id %>" method="post" enctype="multipart/form-data" class="postre-form" style="margin-top:8px;">
-                <input type="text" name="title" value="<%= p.title %>" required>
-                <input type="text" name="description" value="<%= p.description %>" required>
-                <input type="number" step="0.01" name="price" value="<%= p.price || '' %>">
-                <input type="file" name="imageFile" accept="image/*">
-                <input type="url" name="imageUrl" placeholder="o URL de imagen">
-                <button type="submit" class="submit-btn">Actualizar</button>
-              </form>
+            <li class="postre-item-admin card">
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <div style="flex:1;min-width:180px;">
+                  <strong style="font-size:18px;"><%= p.title %></strong>
+                  <p style="color:#555;margin-top:6px;"> <%= p.description %></p>
+                  <% if (p.price) { %><p style="font-weight:600;color:#333;">Precio: S/ <%= p.price %></p><% } %>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <form action="/admin/postres/delete/<%= p._id %>" method="post" style="margin:0;">
+                    <button type="submit" class="delete-btn">Eliminar</button>
+                  </form>
+                </div>
+              </div>
+
+              <details style="margin-top:12px;">
+                <summary style="cursor:pointer;color:#007bff;">Editar postre</summary>
+                <form action="/admin/postres/update/<%= p._id %>" method="post" enctype="multipart/form-data" class="service-form-admin" style="margin-top:10px;">
+                  <div class="form-grid">
+                    <div class="form-row">
+                      <label class="label-muted">Título</label>
+                      <input type="text" name="title" value="<%= p.title %>" required>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Precio (opcional)</label>
+                      <input type="number" step="0.01" name="price" value="<%= p.price || '' %>">
+                    </div>
+                    <div class="form-row full">
+                      <label class="label-muted">Descripción</label>
+                      <textarea name="description" required><%= p.description %></textarea>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Nueva imagen (archivo)</label>
+                      <input type="file" name="imageFile" accept="image/*">
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">o URL de imagen</label>
+                      <input type="url" name="imageUrl" placeholder="https://...">
+                    </div>
+                    <div class="form-row full">
+                      <button type="submit" class="submit-btn">Actualizar</button>
+                    </div>
+                  </div>
+                </form>
+              </details>
             </li>
           <% }); %>
         </ul>

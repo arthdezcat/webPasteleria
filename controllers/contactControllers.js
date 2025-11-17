@@ -26,8 +26,14 @@ exports.getContact = async (req, res) => {
 };
 
 // Añadir nuevo contacto (admin)
+const { validationResult } = require('express-validator');
 exports.addContact = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const contact = await Contact.find();
+      return res.status(400).render('admin/contact', { contact, errors: errors.array(), old: req.body });
+    }
     let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl } = req.body;
     // Normalizar entradas
     email = normalizeEmail(email);
@@ -54,16 +60,24 @@ exports.addContact = async (req, res) => {
       iconUrl
     });
     await newContact.save();
+    req.flash('success_msg', 'Contacto agregado correctamente');
     res.redirect('/admin/contact');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al agregar el contacto');
+    req.flash('error_msg', 'Error al agregar el contacto');
+    res.redirect('/admin/contact');
   }
 };
 
 // Actualizar contacto (admin)
 exports.updateContact = async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      const contact = await Contact.find();
+      // Renderizamos la vista con errores y los datos enviados
+      return res.status(400).render('admin/contact', { contact, errors: errors.array(), old: req.body });
+    }
     const { id } = req.params;
     let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl } = req.body;
     // Normalizar entradas
@@ -95,10 +109,12 @@ exports.updateContact = async (req, res) => {
       iconUrl
     };
     await Contact.findByIdAndUpdate(id, updateData);
+    req.flash('success_msg', 'Contacto actualizado correctamente');
     res.redirect('/admin/contact');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al actualizar el contacto');
+    req.flash('error_msg', 'Error al actualizar el contacto');
+    res.redirect('/admin/contact');
   }
 };
 
@@ -112,9 +128,11 @@ exports.deleteContact = async (req, res) => {
       await cloudinary.uploader.destroy('webservitec/' + publicId);
     }
     await Contact.findByIdAndDelete(id);
+    req.flash('success_msg', 'Contacto eliminado');
     res.redirect('/admin/contact');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al eliminar el contacto');
+    req.flash('error_msg', 'Error al eliminar el contacto');
+    res.redirect('/admin/contact');
   }
 };

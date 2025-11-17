@@ -37,44 +37,52 @@
         <div class="contacts-container">
           <% const hasContacts = Array.isArray(contact) && contact.length > 0; %>
           <% if (hasContacts) { %>
-          <% contact.forEach(item => { %>
-            <div class="contact-item" style="display:flex;gap:12px;align-items:center;">
-              <% if (item.iconUrl) { %>
-                <img src="<%= item.iconUrl %>" alt="icono" style="width:56px;height:56px;border-radius:12px;object-fit:cover;<%= item.iconColor ? 'background:'+item.iconColor+';' : '' %>">
-              <% } %>
-              <div>
-                <h3 class="contact-name">Nombre: <%= item.name %></h3>
-                <p class="contact-email">
-                  <strong>Correo:</strong>
-                  <% if (item.emailUrl) { %>
-                    <a href="<%= item.emailUrl %>" style="color:inherit;text-decoration:underline;"><%= item.email %></a>
-                  <% } else { %>
-                    <%= item.email %>
-                  <% } %>
-                </p>
-                <p class="contact-phone">
-                  <strong>WhatsApp/Teléfono:</strong>
-                  <% if (item.whatsappUrl) { %>
-                    <a href="<%= item.whatsappUrl %>" target="_blank" style="color:inherit;text-decoration:underline;"><%= item.telefono %></a>
-                  <% } else { %>
-                    <%= item.telefono %>
-                  <% } %>
-                </p>
-                <% if (item.facebookUrl) { %>
-                  <p><strong>Facebook:</strong> <a href="<%= item.facebookUrl %>" target="_blank"><%= item.facebookUrl %></a></p>
-                <% } %>
-                <% if (item.extraUrl) { %>
-                  <p><strong>Información adicional:</strong> <a href="<%= item.extraUrl %>" target="_blank"><%= item.extraUrl %></a></p>
-                <% } %>
-                <% if (item.footer) { %>
-                  <p style="opacity:0.8"><%= item.footer %></p>
-                <% } %>
-              </div>
-            </div>
-          <% }); %>
+            <% contact.forEach(item => { %>
+              <% let avatarStyle = ''; if (item.iconColor) { avatarStyle = 'background:' + item.iconColor + ';'; } %>
+              <article class="contact-item card" aria-label="Contacto <%= item.name %>">
+                <div style="display:flex;gap:14px;align-items:center;">
+                  <div style="flex:0 0 auto;">
+                    <% if (item.iconUrl) { %>
+                      <img src="<%= item.iconUrl %>" alt="Icono <%= item.name %>" class="avatar-preview" style="<%= avatarStyle %>">
+                    <% } else { %>
+                      <% const initials = (item.name || '').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase(); %>
+                      <div class="avatar-preview" style="display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;<%= avatarStyle %>"><%= initials %></div>
+                    <% } %>
+                  </div>
+
+                  <div style="flex:1;text-align:left;">
+                    <h3 class="contact-name"><%= item.name %></h3>
+                    <p class="contact-meta">
+                      <a href="<%= item.emailUrl || ('mailto:' + (item.email || '')) %>" class="social-link" title="Enviar email"><i class="fas fa-envelope"></i> <span><%= item.email || '—' %></span></a>
+                    </p>
+                    <p class="contact-meta">
+                      <% if (item.whatsappUrl) { %>
+                        <a href="<%= item.whatsappUrl %>" class="social-link" target="_blank" title="Abrir WhatsApp"><i class="fab fa-whatsapp"></i> <span><%= item.telefono %></span></a>
+                      <% } else if (item.telefono) { %>
+                        <a href="tel:<%= item.telefono %>" class="social-link" title="Llamar"><i class="fas fa-phone"></i> <span><%= item.telefono %></span></a>
+                      <% } else { %>
+                        <span class="muted"><i class="fas fa-phone"></i> —</span>
+                      <% } %>
+                    </p>
+
+                    <div class="contact-actions" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+                      <% if (item.facebookUrl) { %>
+                        <a href="<%= item.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                      <% } %>
+                      <% if (item.extraUrl) { %>
+                        <a href="<%= item.extraUrl %>" target="_blank" class="social-btn" style="background:#6c757d;">Más info</a>
+                      <% } %>
+                    </div>
+
+                    <% if (item.footer) { %>
+                      <p style="opacity:0.85;margin-top:8px;"> <%= item.footer %> </p>
+                    <% } %>
+                  </div>
+                </div>
+              </article>
+            <% }); %>
           <% } else { %>
-            <!-- Sin contactos registrados: sección vacía -->
-            <div style="min-height:120px;"></div>
+            <div style="min-height:120px;display:flex;align-items:center;justify-content:center;">No hay contactos registrados.</div>
           <% } %>
         </div>
       </section>

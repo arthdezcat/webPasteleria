@@ -25,24 +25,79 @@
 
   <main>
     <div class="admin-container-galeris">
-      <section class="add-gallery">
+      <section class="add-gallery card">
         <h1>Agregar a la Galería</h1>
-        <form action="/admin/galeria/add" method="post" enctype="multipart/form-data" class="gallery-form">
-          <div class="form-group">
-            <label for="title">Título:</label>
-            <input type="text" id="title" name="title" required>
+        <% if (typeof errors !== 'undefined' && errors && errors.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#fff6f6;border-left:4px solid #e74c3c;color:#611a15;">
+            <ul style="margin:0 0 0 18px;">
+              <% errors.forEach(err => { %>
+                <li><%= err.msg %></li>
+              <% }) %>
+            </ul>
           </div>
-          <div class="form-group">
-            <label for="description">Descripción:</label>
-            <textarea id="description" name="description" required></textarea>
+        <% } %>
+        <% if (success_msg && success_msg.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#e6ffed;border-left:4px solid #2ecc71;color:#064e3b;">
+            <% success_msg.forEach(m => { %>
+              <div><%= m %></div>
+            <% }) %>
           </div>
-          <div class="form-group">
-            <label for="imageFile">Imagen:</label>
-            <input type="file" id="imageFile" name="imageFile" accept="image/*">
-            <label for="imageUrl">o URL de la Imagen:</label>
-            <input type="url" id="imageUrl" name="imageUrl">
+        <% } %>
+        <% if (error_msg && error_msg.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#fff1f0;border-left:4px solid #e74c3c;color:#611a15;">
+            <% error_msg.forEach(m => { %>
+              <div><%= m %></div>
+            <% }) %>
           </div>
-          <button type="submit" class="submit-btn">Añadir a la Galería</button>
+        <% } %>
+        <form action="/admin/galeria/add" method="post" enctype="multipart/form-data" class="gallery-form service-form-admin">
+          <div class="form-grid">
+            <div class="form-row">
+              <label class="label-muted" for="title">Título</label>
+              <% const errTitle = (errors || []).find(e => e.param === 'title'); %>
+              <input type="text" id="title" name="title" required value="<%= old && old.title ? old.title : '' %>">
+              <% if (errTitle) { %>
+                <div class="field-error"><%= errTitle.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="price">Precio (opcional)</label>
+              <% const errPrice = (errors || []).find(e => e.param === 'price'); %>
+              <input type="number" step="0.01" id="price" name="price" placeholder="0.00" value="<%= old && old.price ? old.price : '' %>">
+              <% if (errPrice) { %>
+                <div class="field-error"><%= errPrice.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="category">Categoría</label>
+              <input type="text" id="category" name="category" placeholder="ej: Torta, Pie, Cupcake" value="<%= old && old.category ? old.category : '' %>">
+            </div>
+
+            <div class="form-row full">
+              <label class="label-muted" for="description">Descripción</label>
+              <% const errDescription = (errors || []).find(e => e.param === 'description'); %>
+              <textarea id="description" name="description" required><%= old && old.description ? old.description : '' %></textarea>
+              <% if (errDescription) { %>
+                <div class="field-error"><%= errDescription.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="imageFile">Imagen (archivo)</label>
+              <input type="file" id="imageFile" name="imageFile" accept="image/*">
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="imageUrl">o URL de la Imagen</label>
+              <input type="url" id="imageUrl" name="imageUrl" value="<%= old && old.imageUrl ? old.imageUrl : '' %>">
+            </div>
+
+            <div class="form-row full">
+              <button type="submit" class="submit-btn">Añadir a la Galería</button>
+            </div>
+          </div>
         </form>
       </section>
 
@@ -50,21 +105,55 @@
         <h2>Galería Actual</h2>
         <ul class="gallery-list-admin">
           <% galeria.forEach(g => { %>
-            <li class="gallery-item-admin">
-              <div class="gallery-details-admin">
-                <strong><%= g.title %></strong>
-                <p><%= g.description %></p>
+            <li class="gallery-item-admin card">
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <div style="flex:1;min-width:180px;">
+                  <strong style="font-size:18px;"><%= g.title %></strong>
+                  <p style="color:#555;margin-top:6px;"><%= g.description %></p>
+                  <% if (g.price) { %><p style="font-weight:600;color:#333;">Precio: S/ <%= g.price %></p><% } %>
+                  <% if (g.category) { %><p style="font-size:13px;color:#777;">Cat: <%= g.category %></p><% } %>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                  <form action="/admin/galeria/delete/<%= g._id %>" method="post" style="margin:0;">
+                    <button type="submit" class="delete-btn">Eliminar</button>
+                  </form>
+                </div>
               </div>
-              <form action="/admin/galeria/delete/<%= g._id %>" method="post">
-                <button type="submit" class="delete-btn">Eliminar</button>
-              </form>
-              <form action="/admin/galeria/update/<%= g._id %>" method="post" enctype="multipart/form-data" class="gallery-form" style="margin-top:8px;">
-                <input type="text" name="title" value="<%= g.title %>" required>
-                <input type="text" name="description" value="<%= g.description %>" required>
-                <input type="file" name="imageFile" accept="image/*">
-                <input type="url" name="imageUrl" placeholder="o URL de imagen">
-                <button type="submit" class="submit-btn">Actualizar</button>
-              </form>
+
+              <details style="margin-top:12px;">
+                <summary style="cursor:pointer;color:#007bff;">Editar</summary>
+                <form action="/admin/galeria/update/<%= g._id %>" method="post" enctype="multipart/form-data" class="service-form-admin" style="margin-top:10px;">
+                  <div class="form-grid">
+                    <div class="form-row">
+                      <label class="label-muted">Título</label>
+                      <input type="text" name="title" value="<%= g.title %>" required>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Precio (opcional)</label>
+                      <input type="number" step="0.01" name="price" value="<%= g.price || '' %>">
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Categoría</label>
+                      <input type="text" name="category" value="<%= g.category || '' %>">
+                    </div>
+                    <div class="form-row full">
+                      <label class="label-muted">Descripción</label>
+                      <textarea name="description" required><%= g.description %></textarea>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Nueva imagen (archivo)</label>
+                      <input type="file" name="imageFile" accept="image/*">
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">o URL de imagen</label>
+                      <input type="url" name="imageUrl" placeholder="https://...">
+                    </div>
+                    <div class="form-row full">
+                      <button type="submit" class="submit-btn">Actualizar</button>
+                    </div>
+                  </div>
+                </form>
+              </details>
             </li>
           <% }); %>
         </ul>

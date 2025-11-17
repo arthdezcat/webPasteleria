@@ -26,55 +26,102 @@
   <main>
     <div class="admin-container-contact">
       <!-- Sección para agregar contactos -->
-      <section class="add-contact">
+      <section class="add-contact card">
         <h1>Agregar Contacto</h1>
-        <form action="/admin/contact/add" method="post" class="contact-form" enctype="multipart/form-data">
-          <div class="form-group">
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name" required>
+        <% if (typeof errors !== 'undefined' && errors && errors.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#fff6f6;border-left:4px solid #e74c3c;color:#611a15;">
+            <ul style="margin:0 0 0 18px;">
+              <% errors.forEach(err => { %>
+                <li><%= err.msg %></li>
+              <% }) %>
+            </ul>
           </div>
-
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+        <% } %>
+        <% if (success_msg && success_msg.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#e6ffed;border-left:4px solid #2ecc71;color:#064e3b;">
+            <% success_msg.forEach(m => { %>
+              <div><%= m %></div>
+            <% }) %>
           </div>
-
-          <div class="form-group">
-            <label for="telefono">Teléfono:</label>
-            <input type="text" id="telefono" name="telefono" required>
+        <% } %>
+        <% if (error_msg && error_msg.length) { %>
+          <div class="card" style="margin:12px 0;padding:12px;background:#fff1f0;border-left:4px solid #e74c3c;color:#611a15;">
+            <% error_msg.forEach(m => { %>
+              <div><%= m %></div>
+            <% }) %>
           </div>
+        <% } %>
+        <form action="/admin/contact/add" method="post" class="contact-form service-form-admin" enctype="multipart/form-data">
+          <div class="form-grid">
+            <div class="form-row">
+              <label class="label-muted" for="name">Nombre</label>
+              <% const errName = (errors || []).find(e => e.param === 'name'); %>
+              <input type="text" id="name" name="name" required value="<%= old && old.name ? old.name : '' %>">
+              <% if (errName) { %>
+                <div class="field-error"><%= errName.msg %></div>
+              <% } %>
+            </div>
 
-          <div class="form-group">
-            <label for="facebookUrl">Facebook URL:</label>
-            <input type="url" id="facebookUrl" name="facebookUrl" placeholder="https://facebook.com/tu-pagina">
+            <div class="form-row">
+              <label class="label-muted" for="email">Email</label>
+              <% const errEmail = (errors || []).find(e => e.param === 'email'); %>
+              <input type="email" id="email" name="email" required value="<%= old && old.email ? old.email : '' %>">
+              <% if (errEmail) { %>
+                <div class="field-error"><%= errEmail.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="telefono">Teléfono</label>
+              <% const errTelefono = (errors || []).find(e => e.param === 'telefono'); %>
+              <input type="text" id="telefono" name="telefono" required value="<%= old && old.telefono ? old.telefono : '' %>">
+              <% if (errTelefono) { %>
+                <div class="field-error"><%= errTelefono.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="facebookUrl">Facebook URL</label>
+              <% const errFacebook = (errors || []).find(e => e.param === 'facebookUrl'); %>
+              <input type="url" id="facebookUrl" name="facebookUrl" placeholder="https://facebook.com/tu-pagina" value="<%= old && old.facebookUrl ? old.facebookUrl : '' %>">
+              <% if (errFacebook) { %>
+                <div class="field-error"><%= errFacebook.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="extraUrl">URL adicional</label>
+              <% const errExtra = (errors || []).find(e => e.param === 'extraUrl'); %>
+              <input type="url" id="extraUrl" name="extraUrl" placeholder="https://tusitio.com/info" value="<%= old && old.extraUrl ? old.extraUrl : '' %>">
+              <% if (errExtra) { %>
+                <div class="field-error"><%= errExtra.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="footer">Texto de pie</label>
+              <input type="text" id="footer" name="footer" placeholder="Texto que se muestra en la sección de contacto" value="<%= old && old.footer ? old.footer : '' %>">
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="iconColor">Color de icono</label>
+              <input type="color" id="iconColor" name="iconColor" value="<%= old && old.iconColor ? old.iconColor : '#ffffff' %>">
+            </div>
+
+            <div class="form-row full">
+              <label class="label-muted" for="iconFile">Icono (imagen)</label>
+              <input type="file" id="iconFile" name="iconFile" accept="image/*">
+            </div>
+
+            <div class="form-row full">
+              <button type="submit" class="submit-btn">Añadir Contacto</button>
+            </div>
           </div>
-
-          <div class="form-group">
-            <label for="extraUrl">URL adicional:</label>
-            <input type="url" id="extraUrl" name="extraUrl" placeholder="https://tusitio.com/info">
-          </div>
-
-          <div class="form-group">
-            <label for="footer">Texto de pie:</label>
-            <input type="text" id="footer" name="footer" placeholder="Texto que se muestra en la sección de contacto">
-          </div>
-
-          <div class="form-group">
-            <label for="iconColor">Color de icono:</label>
-            <input type="color" id="iconColor" name="iconColor">
-          </div>
-
-          <div class="form-group">
-            <label for="iconFile">Icono (imagen):</label>
-            <input type="file" id="iconFile" name="iconFile" accept="image/*">
-          </div>
-
-          <button type="submit" class="submit-btn">Añadir Contacto</button>
         </form>
       </section>
 
       <!-- Sección para administrar contactos -->
-      <section class="manage-contact">
+      <section class="manage-contact card">
         <h2>Contactos Actuales</h2>
         <ul class="contact-list-admin">
           <% contact.forEach(contact => { %>
@@ -93,24 +140,56 @@
                   <p>Pie: <%= contact.footer %></p>
                 <% } %>
                 <% if (contact.iconUrl) { %>
+                  <% let iconStyle = 'width:48px;height:48px;border-radius:8px;object-fit:cover;'; if (contact.iconColor) { iconStyle += 'background:' + contact.iconColor + ';'; } %>
                   <p>Icono:</p>
-                  <img src="<%= contact.iconUrl %>" alt="icono" style="width:48px;height:48px;border-radius:8px;object-fit:cover;<%= contact.iconColor ? 'background:'+contact.iconColor+';' : '' %>">
+                  <img src="<%= contact.iconUrl %>" alt="icono" style="<%= iconStyle %>">
                 <% } %>
               </div>
-              <form action="/admin/contact/delete/<%= contact._id %>" method="post">
+              <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="margin:0;">
                 <button type="submit" class="delete-btn">Eliminar</button>
               </form>
-              <form action="/admin/contact/update/<%= contact._id %>" method="post" enctype="multipart/form-data" style="margin-top:8px;">
-                <input type="text" name="name" value="<%= contact.name %>" required>
-                <input type="email" name="email" value="<%= contact.email %>" required>
-                <input type="text" name="telefono" value="<%= contact.telefono %>" required>
-                <input type="url" name="facebookUrl" value="<%= contact.facebookUrl || '' %>" placeholder="Facebook URL">
-                <input type="url" name="extraUrl" value="<%= contact.extraUrl || '' %>" placeholder="URL adicional">
-                <input type="text" name="footer" value="<%= contact.footer || '' %>" placeholder="Texto de pie">
-                <input type="color" name="iconColor" value="<%= contact.iconColor || '#ffffff' %>">
-                <input type="file" name="iconFile" accept="image/*">
-                <button type="submit" class="submit-btn">Actualizar</button>
-              </form>
+              <details style="margin-top:8px;">
+                <summary style="cursor:pointer;color:#007bff;">Editar</summary>
+                <form action="/admin/contact/update/<%= contact._id %>" method="post" enctype="multipart/form-data" class="service-form-admin" style="margin-top:10px;">
+                  <div class="form-grid">
+                    <div class="form-row">
+                      <label class="label-muted">Nombre</label>
+                      <input type="text" name="name" value="<%= contact.name %>" required>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Email</label>
+                      <input type="email" name="email" value="<%= contact.email %>" required>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Teléfono</label>
+                      <input type="text" name="telefono" value="<%= contact.telefono %>" required>
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Facebook URL</label>
+                      <input type="url" name="facebookUrl" value="<%= contact.facebookUrl || '' %>" placeholder="Facebook URL">
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">URL adicional</label>
+                      <input type="url" name="extraUrl" value="<%= contact.extraUrl || '' %>" placeholder="URL adicional">
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Texto pie</label>
+                      <input type="text" name="footer" value="<%= contact.footer || '' %>" placeholder="Texto de pie">
+                    </div>
+                    <div class="form-row">
+                      <label class="label-muted">Color Icono</label>
+                      <input type="color" name="iconColor" value="<%= contact.iconColor || '#ffffff' %>">
+                    </div>
+                    <div class="form-row full">
+                      <label class="label-muted">Icono (imagen)</label>
+                      <input type="file" name="iconFile" accept="image/*">
+                    </div>
+                    <div class="form-row full">
+                      <button type="submit" class="submit-btn">Actualizar</button>
+                    </div>
+                  </div>
+                </form>
+              </details>
             </li>
           <% }); %>
         </ul>
