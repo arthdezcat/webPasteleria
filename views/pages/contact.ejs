@@ -17,7 +17,7 @@
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
           <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
-          <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
+          <li><a href="/galeria"><i class="fas fa-images"></i> Pasteles</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
       </div>
@@ -38,15 +38,14 @@
           <% const hasContacts = Array.isArray(contact) && contact.length > 0; %>
           <% if (hasContacts) { %>
             <% contact.forEach(item => { %>
-              <% let avatarStyle = ''; if (item.iconColor) { avatarStyle = 'background:' + item.iconColor + ';'; } %>
               <article class="contact-item card" aria-label="Contacto <%= item.name %>">
                 <div style="display:flex;gap:14px;align-items:center;">
                   <div style="flex:0 0 auto;">
                     <% if (item.iconUrl) { %>
-                      <img src="<%= item.iconUrl %>" alt="Icono <%= item.name %>" class="avatar-preview" style="<%= avatarStyle %>">
+                      <img src="<%= item.iconUrl %>" alt="Icono <%= item.name %>" class="avatar-preview" data-bg="<%= item.iconColor || '' %>">
                     <% } else { %>
                       <% const initials = (item.name || '').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase(); %>
-                      <div class="avatar-preview" style="display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;<%= avatarStyle %>"><%= initials %></div>
+                      <div class="avatar-preview" data-bg="<%= item.iconColor || '' %>" style="display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;"><%= initials %></div>
                     <% } %>
                   </div>
 
@@ -66,6 +65,15 @@
                     </p>
 
                     <div class="contact-actions" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+                      <% if (item.whatsappUrl) { %>
+                        <a href="<%= item.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                      <% } %>
+                      <% if (item.email) { %>
+                        <a href="mailto:<%= item.email %>" class="social-btn gmail" title="Email"><i class="fas fa-envelope"></i></a>
+                      <% } %>
+                      <% if (item.messengerUrl) { %>
+                        <a href="<%= item.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+                      <% } %>
                       <% if (item.facebookUrl) { %>
                         <a href="<%= item.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                       <% } %>
@@ -103,6 +111,11 @@
             <i class="fab fa-facebook-f"></i>
           </a>
         <% } %>
+        <% if (cf && cf.messengerUrl) { %>
+          <a href="<%= cf.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger">
+            <i class="fab fa-facebook-messenger"></i>
+          </a>
+        <% } %>
         <% if (cf && cf.whatsappUrl) { %>
           <a href="<%= cf.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
             <i class="fab fa-whatsapp"></i>
@@ -112,5 +125,13 @@
       <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></p>
     </div>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('[data-bg]').forEach(function(el){
+        var c = el.getAttribute('data-bg');
+        if (c) el.style.background = c;
+      });
+    });
+  </script>
 </body>
 </html>

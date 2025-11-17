@@ -47,17 +47,27 @@ exports.updatePostre = async (req, res) => {
       return res.status(400).render('admin/postres', { postres, errors: errors.array(), old: req.body });
     }
     const { id } = req.params;
-    let image = req.body.imageUrl;
     const p = await Postre.findById(id);
+    if (!p) {
+      req.flash('error_msg', 'Postre no encontrado');
+      return res.redirect('/admin/postres');
+    }
+    const updateData = {};
+    if (req.body.title !== undefined && req.body.title !== '') updateData.title = req.body.title;
+    if (req.body.description !== undefined && req.body.description !== '') updateData.description = req.body.description;
+    if (req.body.price !== undefined && req.body.price !== '') updateData.price = req.body.price;
+    // image handling
     if (req.file && req.file.path) {
-      image = req.file.path;
-      if (p && p.image && p.image.includes('cloudinary.com')) {
+      const image = req.file.path;
+      if (p.image && p.image.includes('cloudinary.com')) {
         const publicId = p.image.split('/').slice(-1)[0].split('.')[0];
         try { await cloudinary.uploader.destroy('webpasteleria/' + publicId); } catch (e) { console.error('Cloudinary delete error:', e); }
       }
+      updateData.image = image;
+    } else if (req.body.imageUrl !== undefined && req.body.imageUrl !== '') {
+      updateData.image = req.body.imageUrl;
     }
-    const { title, description, price } = req.body;
-    await Postre.findByIdAndUpdate(id, { title, description, price, image });
+    await Postre.findByIdAndUpdate(id, updateData);
     req.flash('success_msg', 'Postre actualizado correctamente');
     res.redirect('/admin/postres');
   } catch (error) {

@@ -16,7 +16,7 @@
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
           <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
-          <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
+          <li><a href="/galeria"><i class="fas fa-images"></i> Pasteles</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
       </div>
@@ -74,6 +74,11 @@
         <% if (cf && cf.facebookUrl) { %>
           <a href="<%= cf.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
             <i class="fab fa-facebook-f"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.messengerUrl) { %>
+          <a href="<%= cf.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger">
+            <i class="fab fa-facebook-messenger"></i>
           </a>
         <% } %>
         <% if (cf && cf.whatsappUrl) { %>

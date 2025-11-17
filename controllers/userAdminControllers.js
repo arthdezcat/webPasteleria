@@ -84,28 +84,38 @@ exports.updateUser = async (req, res) => {
     }
 
     const { id } = req.params;
-    const { fullName, username, email, role, status, password } = req.body;
-    const update = { fullName, username, email, role, status };
+    const { fullName, username, email, role, status, password, confirmPassword } = req.body;
+    const update = {};
+    if (fullName !== undefined && fullName !== '') update.fullName = fullName;
+    if (username !== undefined && username !== '') update.username = username;
+    if (email !== undefined && email !== '') update.email = email;
+    if (role !== undefined && role !== '') update.role = role;
+    if (status !== undefined && status !== '') update.status = status;
     if (req.file && req.file.path) update.avatar = req.file.path;
-    if (password) {
-      if (password !== confirmPassword) return res.status(400).send('Las contraseñas no coinciden');
-      update.password = password; // will be hashed by pre-save if using save(); using findByIdAndUpdate won't trigger pre-save
-    }
 
-    // If password is being updated, load and save to trigger pre-save hook
-    if (update.password) {
+    if (password) {
+      if (password !== confirmPassword) {
+        req.flash('error_msg', 'Las contraseñas no coinciden');
+        return res.redirect('/admin/users');
+      }
+      // handle password update by loading the user and saving to trigger pre-save hook
       const user = await Admin.findById(id);
-      if (!user) return res.status(404).send('Usuario no encontrado');
-      user.fullName = update.fullName;
-      user.username = update.username;
-      user.email = update.email;
-      user.role = update.role;
-      user.status = update.status;
+      if (!user) {
+        req.flash('error_msg', 'Usuario no encontrado');
+        return res.redirect('/admin/users');
+      }
+      // update fields that were provided
+      if (update.fullName) user.fullName = update.fullName;
+      if (update.username) user.username = update.username;
+      if (update.email) user.email = update.email;
+      if (update.role) user.role = update.role;
+      if (update.status) user.status = update.status;
       if (update.avatar) user.avatar = update.avatar;
-      user.password = update.password;
+      user.password = password;
       await user.save();
       req.flash('success_msg', 'Usuario actualizado correctamente');
     } else {
+      // No password change: do partial update
       await Admin.findByIdAndUpdate(id, update);
       req.flash('success_msg', 'Usuario actualizado correctamente');
     }

@@ -17,7 +17,7 @@
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
           <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
-          <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
+          <li><a href="/galeria"><i class="fas fa-images"></i> Pasteles</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
       </div>
@@ -27,7 +27,7 @@
  <main>
   <section class="portadaServi">
     <div class="portada-content">
-      <h2><span class="brand-name-serv"><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %> — Nuestros Postres</span></h2>
+          <h2><span class="brand-name-serv"><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %> — Nuestros Postres</span></h2>
       <p class="contact-descript">Explora y conoce nuestros postres y delicias.</p>
       <div class="services-container">
         <% postres.forEach(p => { %>
@@ -51,6 +51,11 @@
                 <% if (c && c.emailUrl) { %>
                   <a href="<%= c.emailUrl %>?subject=<%= encodeURIComponent('Consulta sobre ' + p.title) %>&body=<%= encodeURIComponent(msg) %>" class="social-btn gmail" title="Email">
                     <i class="fas fa-envelope"></i> Email
+                  </a>
+                <% } %>
+                <% if (c && c.messengerUrl) { %>
+                  <a href="<%= c.messengerUrl %>?ref=<%= encodeURIComponent(p.title) %>" target="_blank" class="social-btn messenger" title="Messenger">
+                    <i class="fab fa-facebook-messenger"></i> Mensaje
                   </a>
                 <% } %>
                 <% if (c && c.facebookUrl) { %>
@@ -79,6 +84,11 @@
       <% if (cf && cf.facebookUrl) { %>
         <a href="<%= cf.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
           <i class="fab fa-facebook-f"></i>
+        </a>
+      <% } %>
+      <% if (cf && cf.messengerUrl) { %>
+        <a href="<%= cf.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger">
+          <i class="fab fa-facebook-messenger"></i>
         </a>
       <% } %>
       <% if (cf && cf.whatsappUrl) { %>

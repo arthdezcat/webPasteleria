@@ -31,6 +31,15 @@ body.galeri-page {
   color: #333;
   line-height: 1.6;
 }
+body.pasteles-page {
+  font-family: Arial, sans-serif;
+  background-image: url('/img/galeria.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #333;
+  line-height: 1.6;
+}
 .galeria-title {
   font-size: 36px;
   color: #ffffff;
@@ -227,6 +236,7 @@ nav a:hover {
 .social-btn.whatsapp { background: #25D366; }
 .social-btn.facebook { background: #1877F2; }
 .social-btn.gmail { background: #D93025; }
+.social-btn.messenger { background: #0084FF; }
 
 .send-msg-buttons {
   display: flex;
@@ -686,6 +696,8 @@ textarea {
 .field-inline { display:flex; gap:8px; align-items:center; }
 .label-muted { font-size:14px; color:#555; margin-bottom:6px; }
 .avatar-preview { width:64px; height:64px; border-radius:8px; object-fit:cover; border:1px solid #ddd; }
+/* Small admin icon used in admin lists */
+.admin-icon { width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid #ddd; }
 
 /* Inline field error */
 .field-error { color:#b91c1c; font-size:13px; margin-top:6px; }
@@ -695,6 +707,38 @@ textarea {
 .contact-item .avatar-preview { width:72px; height:72px; border-radius:12px; }
 .contact-item h3 { margin:0 0 6px 0; font-size:18px; }
 .contact-item p { margin:4px 0; color:#444; }
+
+/* Prevent overflow and improve long text handling in cards */
+.galeria-item-description,
+.service-description,
+.contact-item p,
+.contact-meta {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* Truncate long descriptions to a few lines for professional cards */
+.galeria-item-description, .service-description {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4; /* show up to 4 lines */
+  overflow: hidden;
+}
+
+/* For contact footer or long footer text, allow up to 3 lines */
+.contact-item p.footer-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+/* Ensure cards grow gracefully and keep layout consistent */
+.galeria-item, .service-item, .contact-item.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
 /* Improved contact public layout */
 .contact-meta { margin:6px 0; font-size:15px; color:#333; display:flex; align-items:center; gap:8px; }

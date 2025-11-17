@@ -90,6 +90,15 @@
             </div>
 
             <div class="form-row">
+              <label class="label-muted" for="messenger">Messenger (URL o usuario)</label>
+              <% const errMessenger = (errors || []).find(e => e.param === 'messenger'); %>
+              <input type="text" id="messenger" name="messenger" placeholder="https://m.me/tu.usuario o usuario" value="<%= old && old.messenger ? old.messenger : '' %>">
+              <% if (errMessenger) { %>
+                <div class="field-error"><%= errMessenger.msg %></div>
+              <% } %>
+            </div>
+
+            <div class="form-row">
               <label class="label-muted" for="extraUrl">URL adicional</label>
               <% const errExtra = (errors || []).find(e => e.param === 'extraUrl'); %>
               <input type="url" id="extraUrl" name="extraUrl" placeholder="https://tusitio.com/info" value="<%= old && old.extraUrl ? old.extraUrl : '' %>">
@@ -140,9 +149,8 @@
                   <p>Pie: <%= contact.footer %></p>
                 <% } %>
                 <% if (contact.iconUrl) { %>
-                  <% let iconStyle = 'width:48px;height:48px;border-radius:8px;object-fit:cover;'; if (contact.iconColor) { iconStyle += 'background:' + contact.iconColor + ';'; } %>
                   <p>Icono:</p>
-                  <img src="<%= contact.iconUrl %>" alt="icono" style="<%= iconStyle %>">
+                  <img src="<%= contact.iconUrl %>" alt="icono" class="admin-icon" data-bg="<%= contact.iconColor || '' %>">
                 <% } %>
               </div>
               <form action="/admin/contact/delete/<%= contact._id %>" method="post" style="margin:0;">
@@ -197,5 +205,13 @@
     </div>
   </main>
   <script src="/js/theme-toggle.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('[data-bg]').forEach(function(el){
+        var c = el.getAttribute('data-bg');
+        if (c) el.style.background = c;
+      });
+    });
+  </script>
 </body>
 </html>

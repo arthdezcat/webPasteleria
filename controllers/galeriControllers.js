@@ -51,17 +51,28 @@ exports.updateGaleria = async (req, res) => {
       return res.status(400).render('admin/galeri', { galeria, errors: errors.array(), old: req.body });
     }
     const { id } = req.params;
-    let image = req.body.imageUrl;
     const galeria = await Galeria.findById(id);
+    if (!galeria) {
+      req.flash('error_msg', 'Galería no encontrada');
+      return res.redirect('/admin/galeria');
+    }
+    // Build update object only with provided fields
+    const updateData = {};
+    if (req.body.title !== undefined && req.body.title !== '') updateData.title = req.body.title;
+    if (req.body.description !== undefined && req.body.description !== '') updateData.description = req.body.description;
+    // Handle image replacement
     if (req.file && req.file.path) {
-      image = req.file.path;
-      if (galeria && galeria.image && galeria.image.includes('cloudinary.com')) {
+      const image = req.file.path;
+      // delete previous if in cloudinary
+      if (galeria.image && galeria.image.includes('cloudinary.com')) {
         const publicId = galeria.image.split('/').slice(-1)[0].split('.')[0];
         try { await cloudinary.uploader.destroy('webpasteleria/' + publicId); } catch (e) { console.error('Cloudinary delete error:', e); }
       }
+      updateData.image = image;
+    } else if (req.body.imageUrl !== undefined && req.body.imageUrl !== '') {
+      updateData.image = req.body.imageUrl;
     }
-    const { title, description } = req.body;
-    await Galeria.findByIdAndUpdate(id, { title, description, image });
+    await Galeria.findByIdAndUpdate(id, updateData);
     req.flash('success_msg', 'Galería actualizada correctamente');
     res.redirect('/admin/galeria');
   } catch (error) {

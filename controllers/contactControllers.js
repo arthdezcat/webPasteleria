@@ -34,7 +34,7 @@ exports.addContact = async (req, res) => {
       const contact = await Contact.find();
       return res.status(400).render('admin/contact', { contact, errors: errors.array(), old: req.body });
     }
-    let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl } = req.body;
+    let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl, messenger } = req.body;
     // Normalizar entradas
     email = normalizeEmail(email);
     const telefonoNum = normalizePhone(telefono);
@@ -47,6 +47,7 @@ exports.addContact = async (req, res) => {
     // Generar enlaces
     const emailUrl = buildEmailUrl(email);
     const whatsappUrl = buildWhatsappUrl(telefonoNum);
+    const messengerUrl = ensureHttps(messenger);
     const newContact = new Contact({
       name,
       email,
@@ -54,6 +55,8 @@ exports.addContact = async (req, res) => {
       emailUrl,
       whatsappUrl,
       facebookUrl,
+      messenger,
+      messengerUrl,
       extraUrl,
       footer,
       iconColor,
@@ -79,7 +82,7 @@ exports.updateContact = async (req, res) => {
       return res.status(400).render('admin/contact', { contact, errors: errors.array(), old: req.body });
     }
     const { id } = req.params;
-    let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl } = req.body;
+    let { name, email, telefono, facebookUrl, extraUrl, footer, iconColor, iconUrl, messenger } = req.body;
     // Normalizar entradas
     email = normalizeEmail(email);
     const telefonoNum = normalizePhone(telefono);
@@ -96,18 +99,18 @@ exports.updateContact = async (req, res) => {
     }
     const emailUrl = buildEmailUrl(email);
     const whatsappUrl = buildWhatsappUrl(telefonoNum);
-    const updateData = {
-      name,
-      email,
-      telefono,
-      emailUrl,
-      whatsappUrl,
-      facebookUrl,
-      extraUrl,
-      footer,
-      iconColor,
-      iconUrl
-    };
+    const messengerUrl = ensureHttps(messenger);
+    // Build update object only with provided fields (preserve others)
+    const updateData = {};
+    if (name !== undefined && name !== '') updateData.name = name;
+    if (email !== undefined && email !== '') { updateData.email = email; updateData.emailUrl = emailUrl; }
+    if (telefono !== undefined && telefono !== '') { updateData.telefono = telefono; updateData.whatsappUrl = whatsappUrl; }
+    if (facebookUrl !== undefined) updateData.facebookUrl = facebookUrl;
+    if (messenger !== undefined) { updateData.messenger = messenger; updateData.messengerUrl = messengerUrl; }
+    if (extraUrl !== undefined) updateData.extraUrl = extraUrl;
+    if (footer !== undefined) updateData.footer = footer;
+    if (iconColor !== undefined) updateData.iconColor = iconColor;
+    if (iconUrl !== undefined) updateData.iconUrl = iconUrl;
     await Contact.findByIdAndUpdate(id, updateData);
     req.flash('success_msg', 'Contacto actualizado correctamente');
     res.redirect('/admin/contact');
