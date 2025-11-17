@@ -1,0 +1,40 @@
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-left">
+      <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></p>
+    </div>
+    <div class="footer-right footer-social">
+      <% (res.locals.contact || []).forEach(function(c) { %>
+        <% if (c.emailUrl) { %>
+          <a href="<%= c.emailUrl %>" class="social-btn gmail" title="Email" aria-label="Enviar correo">
+            <i class="fas fa-envelope"></i>
+          </a>
+        <% } %>
+        <% if (c.facebookUrl) { %>
+          <a href="<%= c.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook" aria-label="Abrir Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        <% } %>
+        <% if (c.whatsappUrl) { %>
+          <a href="<%= c.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp" aria-label="Enviar WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        <% } %>
+      <% }); %>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer { padding: 18px 16px; background:#232946; color:#fff; }
+  .footer-container { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+  .footer-social { display:flex; gap:10px; }
+  .social-btn { display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; color:#fff; text-decoration:none; box-shadow:0 6px 16px rgba(0,0,0,0.2); transition:transform .15s ease, box-shadow .15s ease; }
+  .social-btn:hover { transform:translateY(-2px); box-shadow:0 10px 26px rgba(0,0,0,0.24); }
+  .social-btn i { font-size:18px; }
+  .social-btn.gmail { background:#dd4b39; }
+  .social-btn.facebook { background:#3b5998; }
+  .social-btn.whatsapp { background:#25d366; }
+  @media (max-width:768px) {
+    .footer-container { flex-direction:column; gap:12px; }
+  }
+</style>

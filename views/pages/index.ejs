@@ -15,7 +15,6 @@
       <div class="container">
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
-          <li><a href="/services"><i class="fas fa-cake"></i> Pastelerías</a></li>
           <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
@@ -62,8 +61,6 @@
     </div>
   </main>
 
-  <footer>
-    <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></p>
-  </footer>
+  <%- include('../partials/footer') %>
 </body>
 </html>

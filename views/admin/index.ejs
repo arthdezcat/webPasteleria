@@ -16,7 +16,6 @@
       <ul>
         <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
         <li><a href="/admin/homeinfo"><i class="fas fa-brush"></i> Inicio</a></li>
-        <li><a href="/admin/services"><i class="fas fa-store"></i> Pastelerías</a></li>
         <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
         <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
         <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
@@ -32,12 +31,6 @@
         <h2 class="admin-title">Panel de Administración</h2>
         <p>Bienvenido al panel de administración de <strong><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></strong>. Gestiona pastelerías, galería, contactos y la presentación pública.</p>
         <div class="admin-dashboard">
-          <div class="admin-box">
-            <h3>Gestión de Servicios</h3>
-            <p>Administra las pastelerías registradas.</p>
-      <button type="button" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
-            <a href="/admin/services" class="admin-link">Ir a Pastelerías</a>
-          </div>
           <div class="admin-box">
             <h3>Gestión de Galería</h3>
             <p>Administra las imágenes de la galería.</p>

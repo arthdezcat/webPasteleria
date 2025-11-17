@@ -16,7 +16,6 @@
       <div class="container">
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
-          <li><a href="/services"><i class="fas fa-cake"></i> Productos</a></li>
           <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
@@ -34,6 +33,24 @@
           escuchar tus sugerencias y ayudarte a disfrutar de nuestros deliciosos productos. Contáctanos para hacer un pedido, obtener más 
           información sobre nuestros postres o cualquier otra consulta. ¡Será un placer ayudarte!
         </p>
+        <div class="contact-links" style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0;">
+          <% if ((contact[0] && contact[0].emailUrl)) { %>
+            <a href="<%= contact[0].emailUrl %>" class="social-btn gmail" title="Email">
+              <i class="fas fa-envelope"></i> <span style="margin-left:6px;">Correo</span>
+            </a>
+          <% } %>
+          <% if ((contact[0] && contact[0].facebookUrl)) { %>
+            <a href="<%= contact[0].facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
+              <i class="fab fa-facebook-f"></i> <span style="margin-left:6px;">Facebook</span>
+            </a>
+          <% } %>
+          <% if ((contact[0] && contact[0].whatsappUrl)) { %>
+            <a href="<%= contact[0].whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i> <span style="margin-left:6px;">WhatsApp</span>
+            </a>
+          <% } %>
+        </div>
+
         <div class="contacts-container">
           <% contact.forEach(item => { %>
             <div class="contact-item" style="display:flex;gap:12px;align-items:center;">
@@ -74,9 +91,6 @@
       </section>
     </div>
   </main>
-
-  <footer>
-    <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></p>
-  </footer>
+  <%- include('../partials/footer') %>
 </body>
 </html>
