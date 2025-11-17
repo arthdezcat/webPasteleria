@@ -16,8 +16,8 @@
       <div class="container">
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+          <li><a href="/galeria"><i class="fas fa-cake"></i> Pasteles</a></li>
           <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
-          <li><a href="/galeria"><i class="fas fa-images"></i> Pasteles</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
       </div>
@@ -28,9 +28,9 @@
   <main>
     <div class="portada">
       <section class="portada-content">
-          <h2><span class="brand-name-serv"><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %> — Pasteles</span></h2>
+          <h2><span class="brand-name-serv">Pasteles</span></h2>
         <p class="contact-descript">
-          Explora nuestra galería de delicias. Desde pasteles personalizados hasta postres.
+          Explora nuestros pasteles. Desde pasteles personalizados para cualquier evento.
         </p>
         <div class="galeria-container">
           <% galeria.forEach(item => { %>
@@ -38,6 +38,7 @@
               <img class="galeria-image" src="<%= item.image %>" alt="<%= item.title %>">
               <h3 class="galeria-item-title"><%= item.title %></h3>
               <p class="galeria-item-description"><%= item.description %></p>
+              <% if (item.price) { %><p class="service-schedule"><i class="fas fa-tag"></i> Precio: <%= item.price %></p><% } %>
               <% const c = (typeof contact !== 'undefined' && contact && contact.length ? contact[0] : null); %>
               <% const brand = (homeInfo && homeInfo.brandName) || 'DeliCakes Delia'; %>
               <% const msgGaleria = `Hola ${brand}, tengo una consulta sobre '${item.title}'. ¿Podrían darme más detalles?`; %>

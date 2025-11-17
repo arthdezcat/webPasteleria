@@ -23,7 +23,7 @@ exports.addGaleria = async (req, res) => {
       const galeria = await Galeria.find();
       return res.status(400).render('admin/galeri', { galeria, errors: errors.array(), old: req.body });
     }
-    const { title, description, imageUrl } = req.body;
+    const { title, description, price, imageUrl } = req.body;
     const image = (req.file && req.file.path) ? req.file.path : imageUrl;
 
     if (!image) {
@@ -31,7 +31,7 @@ exports.addGaleria = async (req, res) => {
       return res.redirect('/admin/galeria');
     }
 
-    const newGaleria = new Galeria({ title, description, image });
+    const newGaleria = new Galeria({ title, description, price, image });
     await newGaleria.save();
     req.flash('success_msg', 'Imagen añadida a la galería');
     res.redirect('/admin/galeria');
@@ -60,6 +60,7 @@ exports.updateGaleria = async (req, res) => {
     const updateData = {};
     if (req.body.title !== undefined && req.body.title !== '') updateData.title = req.body.title;
     if (req.body.description !== undefined && req.body.description !== '') updateData.description = req.body.description;
+    if (req.body.price !== undefined && req.body.price !== '') updateData.price = req.body.price;
     // Handle image replacement
     if (req.file && req.file.path) {
       const image = req.file.path;
