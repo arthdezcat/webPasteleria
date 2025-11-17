@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeliCakes Delia | Administrar Postres</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="/img/administracion.png" type="image/png">
+  <style>
+    .admin-container-postres { padding: 20px; }
+    .postre-list-admin { list-style: none; padding: 0; }
+    .postre-item-admin { background:#fff; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,.1); padding:16px; margin-bottom:12px; }
+    .postre-item-admin strong { display:block; margin-bottom:6px; }
+    .delete-btn, .submit-btn { padding:8px 12px; border:none; border-radius:6px; color:#fff; cursor:pointer; }
+    .delete-btn { background:#D93025; }
+    .submit-btn { background:#1877F2; }
+    .postre-form { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .postre-form input, .postre-form textarea { padding:6px; border-radius:6px; border:1px solid #ccc; }
+  </style>
+  </head>
+<body class="admin-page">
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
+        <li><a href="/admin/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
+        <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
+        <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="admin-container-postres">
+      <section class="add-postre">
+        <h1>Agregar Postre</h1>
+        <form action="/admin/postres/add" method="post" enctype="multipart/form-data" class="postre-form">
+          <input type="text" name="title" placeholder="Título" required>
+          <textarea name="description" placeholder="Descripción" required></textarea>
+          <input type="number" step="0.01" name="price" placeholder="Precio (opcional)">
+          <input type="file" name="imageFile" accept="image/*">
+          <input type="url" name="imageUrl" placeholder="o URL de imagen">
+          <button type="submit" class="submit-btn">Añadir Postre</button>
+        </form>
+      </section>
+
+      <section class="manage-postres">
+        <h2>Postres Registrados</h2>
+        <ul class="postre-list-admin">
+          <% postres.forEach(p => { %>
+            <li class="postre-item-admin">
+              <strong><%= p.title %></strong>
+              <p><%= p.description %></p>
+              <% if (p.price) { %><p>Precio: <%= p.price %></p><% } %>
+              <form action="/admin/postres/delete/<%= p._id %>" method="post">
+                <button type="submit" class="delete-btn">Eliminar</button>
+              </form>
+              <form action="/admin/postres/update/<%= p._id %>" method="post" enctype="multipart/form-data" class="postre-form" style="margin-top:8px;">
+                <input type="text" name="title" value="<%= p.title %>" required>
+                <input type="text" name="description" value="<%= p.description %>" required>
+                <input type="number" step="0.01" name="price" value="<%= p.price || '' %>">
+                <input type="file" name="imageFile" accept="image/*">
+                <input type="url" name="imageUrl" placeholder="o URL de imagen">
+                <button type="submit" class="submit-btn">Actualizar</button>
+              </form>
+            </li>
+          <% }); %>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <script src="/js/theme-toggle.js"></script>
+</body>
+</html>

@@ -16,7 +16,7 @@
       <div class="container">
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
-          <li><a href="/services"><i class="fas fa-cake"></i> Productos</a></li>
+          <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
           <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
@@ -38,6 +38,26 @@
               <img class="galeria-image" src="<%= item.image %>" alt="<%= item.title %>">
               <h3 class="galeria-item-title"><%= item.title %></h3>
               <p class="galeria-item-description"><%= item.description %></p>
+              <% const c = (typeof contact !== 'undefined' && contact && contact.length ? contact[0] : null); %>
+              <% const brand = (homeInfo && homeInfo.brandName) || 'DeliCakes Delia'; %>
+              <% const msgGaleria = `Hola ${brand}, tengo una consulta sobre '${item.title}'. ¿Podrían darme más detalles?`; %>
+              <div class="send-msg-buttons">
+                <% if (c && c.whatsappUrl) { %>
+                  <a href="<%= c.whatsappUrl %>?text=<%= encodeURIComponent(msgGaleria) %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i> Consultar
+                  </a>
+                <% } %>
+                <% if (c && c.emailUrl) { %>
+                  <a href="<%= c.emailUrl %>?subject=<%= encodeURIComponent('Consulta sobre ' + item.title) %>&body=<%= encodeURIComponent(msgGaleria) %>" class="social-btn gmail" title="Email">
+                    <i class="fas fa-envelope"></i> Email
+                  </a>
+                <% } %>
+                <% if (c && c.facebookUrl) { %>
+                  <a href="<%= c.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                  </a>
+                <% } %>
+              </div>
             </div>
           <% }); %>
         </div>
@@ -46,7 +66,27 @@
   </main>
 
   <footer>
-    <p>&copy; 2025 DeliCakes Delia. Todos los derechos reservados.</p>
+    <% const cf = (typeof contact !== 'undefined' && contact && contact.length ? contact[0] : null); %>
+    <div class="footer-social">
+      <div class="social-links">
+        <% if (cf && cf.emailUrl) { %>
+          <a href="<%= cf.emailUrl %>" class="social-btn gmail" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.facebookUrl) { %>
+          <a href="<%= cf.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.whatsappUrl) { %>
+          <a href="<%= cf.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        <% } %>
+      </div>
+      <p>&copy; 2025 DeliCakes Delia. Todos los derechos reservados.</p>
+    </div>
   </footer>
 </body>
 </html>

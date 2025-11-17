@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const serviceController = require('../controllers/serviceControllers');
+const postresController = require('../controllers/postresControllers');
 const contactController = require('../controllers/contactControllers');
 const galeriaController = require('../controllers/galeriControllers');
 const authMiddleware = require('../middlewares/authMiddleware');
@@ -10,10 +10,10 @@ const userAdminController = require('../controllers/userAdminControllers');
 
 // Proteger rutas del panel de administración
 router.use(authMiddleware.isAuthenticated);
-// Panel de administración para servicios
-router.get('/services', async (req, res) => {
-  const services = await require('../models/Service').find();
-  res.render('admin/services', { services });
+// Panel de administración para postres
+router.get('/postres', async (req, res) => {
+  const postres = await require('../models/Postre').find();
+  res.render('admin/postres', { postres });
 });
 
 router.get('/contact', async (req, res) => {
@@ -39,9 +39,9 @@ router.post('/contact/update/:id', upload.single('iconFile'), contactController.
 // Usuarios administradores
 router.get('/users', userAdminController.listUsers);
 router.post('/users/delete/:id', userAdminController.deleteUser);
-router.post('/services/add', upload.single('imageFile'), serviceController.addService);
-router.post('/services/delete/:id', serviceController.deleteService);
-router.post('/services/update/:id', upload.single('imageFile'), serviceController.updateService);
+router.post('/postres/add', upload.single('imageFile'), postresController.addPostre);
+router.post('/postres/delete/:id', postresController.deletePostre);
+router.post('/postres/update/:id', upload.single('imageFile'), postresController.updatePostre);
 router.post('/galeria/add', upload.single('imageFile'), galeriaController.addGaleria);
 router.post('/galeria/delete/:id', galeriaController.deleteGaleria);
 router.post('/galeria/update/:id', upload.single('imageFile'), galeriaController.updateGaleria);

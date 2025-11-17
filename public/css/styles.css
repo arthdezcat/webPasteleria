@@ -198,6 +198,42 @@ nav a:hover {
   padding: 40px 20px;
 }
 
+/* Social links and message buttons */
+.social-links {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 8px 0 12px;
+}
+
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.social-btn i { font-size: 18px; }
+
+.social-btn.whatsapp { background: #25D366; }
+.social-btn.facebook { background: #1877F2; }
+.social-btn.gmail { background: #D93025; }
+
+.send-msg-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.footer-social { text-align: center; padding: 16px 0; }
+
 .portada-content {
   text-align: center;
   margin-bottom: 40px;
