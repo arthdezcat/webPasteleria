@@ -33,7 +33,7 @@
           escuchar tus sugerencias y ayudarte a disfrutar de nuestros deliciosos productos. Contáctanos para hacer un pedido, obtener más 
           información sobre nuestros postres o cualquier otra consulta. ¡Será un placer ayudarte!
         </p>
-        <div class="contact-links" style="display:flex;gap:12px;flex-wrap:wrap;margin:18px 0;">
+        <div class="contact-links">
           <% if ((contact[0] && contact[0].emailUrl)) { %>
             <a href="<%= contact[0].emailUrl %>" class="social-btn gmail" title="Email">
               <i class="fas fa-envelope"></i> <span style="margin-left:6px;">Correo</span>
@@ -53,9 +53,9 @@
 
         <div class="contacts-container">
           <% contact.forEach(item => { %>
-            <div class="contact-item" style="display:flex;gap:12px;align-items:center;">
+            <div class="contact-item contact-flex">
               <% if (item.iconUrl) { %>
-                <img src="<%= item.iconUrl %>" alt="icono" style="width:56px;height:56px;border-radius:12px;object-fit:cover;<%= item.iconColor ? 'background:'+item.iconColor+';' : '' %>">
+                <img src="<%= item.iconUrl %>" alt="icono" class="contact-icon" style="<%= item.iconColor ? 'background:'+item.iconColor+';' : '' %>">
               <% } %>
               <div>
                 <h3 class="contact-name">Nombre: <%= item.name %></h3>

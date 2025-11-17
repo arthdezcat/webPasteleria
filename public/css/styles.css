@@ -193,6 +193,81 @@ nav a:hover {
   color: #f39c12;
 }
 
+/* Footer styles */
+.site-footer {
+  padding: 18px 16px;
+  background: #232946;
+  color: #fff;
+}
+.footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-left p {
+  margin: 0;
+  font-weight: 600;
+}
+.footer-social {
+  display: flex;
+  gap: 10px;
+}
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.social-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.24);
+}
+.social-btn i { font-size: 18px; }
+.social-btn.gmail { background: #dd4b39; }
+.social-btn.facebook { background: #3b5998; }
+.social-btn.whatsapp { background: #25d366; }
+@media (max-width: 768px) {
+  .footer-container { flex-direction: column; gap: 12px; }
+}
+
+/* Contact quick buttons (top of contact page) */
+.contact-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0;
+}
+.contact-links .social-btn {
+  width: auto;
+  height: 38px;
+  border-radius: 999px;
+  padding: 0 14px;
+}
+.contact-links .social-btn i { font-size: 16px; margin-right: 6px; }
+
+/* Page layout helpers */
+.portada { padding: 24px 16px; }
+.portada-content, .portada-content-indice { max-width: 1100px; margin: 0 auto; }
+.brand-name-serv { color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+
+/* Cards grid fixes */
+.contacts-container, .services-container, .galeria-container {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.contact-item { width: auto; text-align: left; }
+.contact-flex { display: flex; gap: 12px; align-items: center; }
+.contact-icon { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+.contact-item .contact-name { margin-bottom: 6px; }
+.contact-item p { margin: 4px 0; }
+
 /* Main Content Section */
 .portadaServi {
   padding: 40px 20px;
