@@ -28,7 +28,7 @@
       <!-- Sección para agregar contactos -->
       <section class="add-contact">
         <h1>Agregar Contacto</h1>
-        <form action="/admin/contact/add" method="post" class="contact-form">
+        <form action="/admin/contact/add" method="post" class="contact-form" enctype="multipart/form-data">
           <div class="form-group">
             <label for="name">Nombre:</label>
             <input type="text" id="name" name="name" required>
@@ -42,6 +42,31 @@
           <div class="form-group">
             <label for="telefono">Teléfono:</label>
             <input type="text" id="telefono" name="telefono" required>
+          </div>
+
+          <div class="form-group">
+            <label for="facebookUrl">Facebook URL:</label>
+            <input type="url" id="facebookUrl" name="facebookUrl" placeholder="https://facebook.com/tu-pagina">
+          </div>
+
+          <div class="form-group">
+            <label for="extraUrl">URL adicional:</label>
+            <input type="url" id="extraUrl" name="extraUrl" placeholder="https://tusitio.com/info">
+          </div>
+
+          <div class="form-group">
+            <label for="footer">Texto de pie:</label>
+            <input type="text" id="footer" name="footer" placeholder="Texto que se muestra en la sección de contacto">
+          </div>
+
+          <div class="form-group">
+            <label for="iconColor">Color de icono:</label>
+            <input type="color" id="iconColor" name="iconColor">
+          </div>
+
+          <div class="form-group">
+            <label for="iconFile">Icono (imagen):</label>
+            <input type="file" id="iconFile" name="iconFile" accept="image/*">
           </div>
 
           <button type="submit" class="submit-btn">Añadir Contacto</button>
@@ -58,9 +83,33 @@
                 <strong><%= contact.name %></strong>
                 <p>Email: <%= contact.email %></p>
                 <p>Teléfono: <%= contact.telefono %></p>
+                <% if (contact.facebookUrl) { %>
+                  <p>Facebook: <a href="<%= contact.facebookUrl %>" target="_blank"><%= contact.facebookUrl %></a></p>
+                <% } %>
+                <% if (contact.extraUrl) { %>
+                  <p>Info adicional: <a href="<%= contact.extraUrl %>" target="_blank"><%= contact.extraUrl %></a></p>
+                <% } %>
+                <% if (contact.footer) { %>
+                  <p>Pie: <%= contact.footer %></p>
+                <% } %>
+                <% if (contact.iconUrl) { %>
+                  <p>Icono:</p>
+                  <img src="<%= contact.iconUrl %>" alt="icono" style="width:48px;height:48px;border-radius:8px;object-fit:cover;<%= contact.iconColor ? 'background:'+contact.iconColor+';' : '' %>">
+                <% } %>
               </div>
               <form action="/admin/contact/delete/<%= contact._id %>" method="post">
                 <button type="submit" class="delete-btn">Eliminar</button>
+              </form>
+              <form action="/admin/contact/update/<%= contact._id %>" method="post" enctype="multipart/form-data" style="margin-top:8px;">
+                <input type="text" name="name" value="<%= contact.name %>" required>
+                <input type="email" name="email" value="<%= contact.email %>" required>
+                <input type="text" name="telefono" value="<%= contact.telefono %>" required>
+                <input type="url" name="facebookUrl" value="<%= contact.facebookUrl || '' %>" placeholder="Facebook URL">
+                <input type="url" name="extraUrl" value="<%= contact.extraUrl || '' %>" placeholder="URL adicional">
+                <input type="text" name="footer" value="<%= contact.footer || '' %>" placeholder="Texto de pie">
+                <input type="color" name="iconColor" value="<%= contact.iconColor || '#ffffff' %>">
+                <input type="file" name="iconFile" accept="image/*">
+                <button type="submit" class="submit-btn">Actualizar</button>
               </form>
             </li>
           <% }); %>

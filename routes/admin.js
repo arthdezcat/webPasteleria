@@ -31,14 +31,17 @@ router.get('/', (req, res) => res.render('admin/index'));
 router.get('/homeinfo', homeInfoController.getAdminHomeInfo);
 router.post('/homeinfo/text', homeInfoController.updateText);
 router.post('/homeinfo/image', upload.single('imageFile'), homeInfoController.updateImage);
+
+// Gestión de contactos (similar a WebServiTec)
+router.post('/contact/add', upload.single('iconFile'), contactController.addContact);
+router.post('/contact/delete/:id', contactController.deleteContact);
+router.post('/contact/update/:id', upload.single('iconFile'), contactController.updateContact);
 // Usuarios administradores
 router.get('/users', userAdminController.listUsers);
 router.post('/users/delete/:id', userAdminController.deleteUser);
 router.post('/services/add', upload.single('imageFile'), serviceController.addService);
 router.post('/services/delete/:id', serviceController.deleteService);
 router.post('/services/update/:id', upload.single('imageFile'), serviceController.updateService);
-router.post('/contact/add', contactController.addContact);
-router.post('/contact/delete/:id', contactController.deleteContact);
 router.post('/galeria/add', upload.single('imageFile'), galeriaController.addGaleria);
 router.post('/galeria/delete/:id', galeriaController.deleteGaleria);
 router.post('/galeria/update/:id', upload.single('imageFile'), galeriaController.updateGaleria);

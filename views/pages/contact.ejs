@@ -36,10 +36,38 @@
         </p>
         <div class="contacts-container">
           <% contact.forEach(item => { %>
-            <div class="contact-item">
-              <h3 class="contact-name">Nombre: <%= item.name %></h3>
-              <p class="contact-email">Email: <%= item.email %></p> 
-              <p class="contact-phone">Teléfono: <%= item.telefono %></p>
+            <div class="contact-item" style="display:flex;gap:12px;align-items:center;">
+              <% if (item.iconUrl) { %>
+                <img src="<%= item.iconUrl %>" alt="icono" style="width:56px;height:56px;border-radius:12px;object-fit:cover;<%= item.iconColor ? 'background:'+item.iconColor+';' : '' %>">
+              <% } %>
+              <div>
+                <h3 class="contact-name">Nombre: <%= item.name %></h3>
+                <p class="contact-email">
+                  <strong>Correo:</strong>
+                  <% if (item.emailUrl) { %>
+                    <a href="<%= item.emailUrl %>" style="color:inherit;text-decoration:underline;"><%= item.email %></a>
+                  <% } else { %>
+                    <%= item.email %>
+                  <% } %>
+                </p>
+                <p class="contact-phone">
+                  <strong>WhatsApp/Teléfono:</strong>
+                  <% if (item.whatsappUrl) { %>
+                    <a href="<%= item.whatsappUrl %>" target="_blank" style="color:inherit;text-decoration:underline;"><%= item.telefono %></a>
+                  <% } else { %>
+                    <%= item.telefono %>
+                  <% } %>
+                </p>
+                <% if (item.facebookUrl) { %>
+                  <p><strong>Facebook:</strong> <a href="<%= item.facebookUrl %>" target="_blank"><%= item.facebookUrl %></a></p>
+                <% } %>
+                <% if (item.extraUrl) { %>
+                  <p><strong>Información adicional:</strong> <a href="<%= item.extraUrl %>" target="_blank"><%= item.extraUrl %></a></p>
+                <% } %>
+                <% if (item.footer) { %>
+                  <p style="opacity:0.8"><%= item.footer %></p>
+                <% } %>
+              </div>
             </div>
           <% }); %>
         </div>
