@@ -3,20 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galería | <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></title>
+  <title>Pasteles | <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/css.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="icon" href="<%= homeInfo && homeInfo.icon && homeInfo.icon.url ? homeInfo.icon.url : '/img/Logo.png' %>" type="image/png"> 
 </head>
-<body class="galeri-page" style="background-image:url('<%= homeInfo && homeInfo.galeriBg && homeInfo.galeriBg.url ? homeInfo.galeriBg.url : '/img/galeria.jpg' %>')"> <!-- Clase específica para la página de galería -->
+<body class="pasteles-page" style="background-image:url('<%= homeInfo && homeInfo.galeriBg && homeInfo.galeriBg.url ? homeInfo.galeriBg.url : '/img/galeria.jpg' %>')"> <!-- Clase específica para la página de pasteles -->
   <!-- Header with Navigation -->
   <header>
     <nav class="navbar">
       <div class="container">
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+<<<<<<< HEAD
           <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
+=======
+          <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
+          <li><a href="/galeria"><i class="fas fa-images"></i> Pasteles</a></li>
+>>>>>>> fix/diseño
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
       </div>
@@ -27,7 +32,7 @@
   <main>
     <div class="portada">
       <section class="portada-content">
-        <h2><span class="brand-name-serv"><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %> — Galería</span></h2>
+          <h2><span class="brand-name-serv"><%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %> — Pasteles</span></h2>
         <p class="contact-descript">
           Explora nuestra galería de delicias. Desde pasteles personalizados hasta postres.
         </p>
@@ -37,6 +42,31 @@
               <img class="galeria-image" src="<%= item.image %>" alt="<%= item.title %>">
               <h3 class="galeria-item-title"><%= item.title %></h3>
               <p class="galeria-item-description"><%= item.description %></p>
+              <% const c = (typeof contact !== 'undefined' && contact && contact.length ? contact[0] : null); %>
+              <% const brand = (homeInfo && homeInfo.brandName) || 'DeliCakes Delia'; %>
+              <% const msgGaleria = `Hola ${brand}, tengo una consulta sobre '${item.title}'. ¿Podrían darme más detalles?`; %>
+              <div class="send-msg-buttons">
+                <% if (c && c.whatsappUrl) { %>
+                  <a href="<%= c.whatsappUrl %>?text=<%= encodeURIComponent(msgGaleria) %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i> Consultar
+                  </a>
+                <% } %>
+                <% if (c && c.emailUrl) { %>
+                  <a href="<%= c.emailUrl %>?subject=<%= encodeURIComponent('Consulta sobre ' + item.title) %>&body=<%= encodeURIComponent(msgGaleria) %>" class="social-btn gmail" title="Email">
+                    <i class="fas fa-envelope"></i> Email
+                  </a>
+                <% } %>
+                <% if (c && c.messengerUrl) { %>
+                  <a href="<%= c.messengerUrl %>?ref=<%= encodeURIComponent(item.title) %>" target="_blank" class="social-btn messenger" title="Messenger">
+                    <i class="fab fa-facebook-messenger"></i> Mensaje
+                  </a>
+                <% } %>
+                <% if (c && c.facebookUrl) { %>
+                  <a href="<%= c.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                  </a>
+                <% } %>
+              </div>
             </div>
           <% }); %>
         </div>
@@ -44,6 +74,37 @@
     </div>
   </main>
 
+<<<<<<< HEAD
   <%- include('../partials/footer') %>
+=======
+  <footer>
+    <% const cf = (typeof contact !== 'undefined' && contact && contact.length ? contact[0] : null); %>
+    <div class="footer-social">
+      <div class="social-links">
+        <% if (cf && cf.emailUrl) { %>
+          <a href="<%= cf.emailUrl %>" class="social-btn gmail" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.facebookUrl) { %>
+          <a href="<%= cf.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.messengerUrl) { %>
+          <a href="<%= cf.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger">
+            <i class="fab fa-facebook-messenger"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.whatsappUrl) { %>
+          <a href="<%= cf.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        <% } %>
+      </div>
+      <p>&copy; 2025 DeliCakes Delia. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+>>>>>>> fix/diseño
 </body>
 </html>

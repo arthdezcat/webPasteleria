@@ -4,6 +4,7 @@ const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 const multer = require('multer');
 const path = require('path');
+const flash = require('connect-flash');
 require('dotenv').config();
 
 // Conexión a MongoDB
@@ -40,6 +41,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(flash());
+
+// Exponer mensajes flash a las vistas
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg') || [];
+  res.locals.error_msg = req.flash('error_msg') || [];
+  next();
+});
 
 // Cargar información de marca y fondos para todas las vistas
 const { loadHomeInfo } = require('./controllers/homeInfoPublic');

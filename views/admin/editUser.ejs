@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Usuario - <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/css.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body class="admin-page">
+  <header>
+    <nav>
+      <ul>
+        <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
+        <li><a href="/admin/users"><i class="fas fa-users"></i> Usuarios</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="admin-container">
+      <div class="admin-container-servi">
+        <section class="add-service card">
+          <h2>Editar usuario</h2>
+          <% if (success_msg && success_msg.length) { %>
+            <div class="card" style="margin:12px 0;padding:12px;background:#e6ffed;border-left:4px solid #2ecc71;color:#064e3b;">
+              <% success_msg.forEach(m => { %>
+                <div><%= m %></div>
+              <% }) %>
+            </div>
+          <% } %>
+          <% if (error_msg && error_msg.length) { %>
+            <div class="card" style="margin:12px 0;padding:12px;background:#fff1f0;border-left:4px solid #e74c3c;color:#611a15;">
+              <% error_msg.forEach(m => { %>
+                <div><%= m %></div>
+              <% }) %>
+            </div>
+          <% } %>
+          <form action="/admin/users/edit/<%= user._id %>" method="POST" enctype="multipart/form-data" class="service-form-admin">
+            <div class="form-grid">
+              <div class="form-row">
+                <label class="label-muted">Nombre completo</label>
+                <input type="text" name="fullName" value="<%= user.fullName || '' %>">
+              </div>
+              <div class="form-row">
+                <label class="label-muted">Usuario</label>
+                <input type="text" name="username" value="<%= user.username %>" required>
+              </div>
+              <div class="form-row">
+                <label class="label-muted">Email</label>
+                <input type="email" name="email" value="<%= user.email || '' %>">
+              </div>
+              <div class="form-row">
+                <label class="label-muted">Rol</label>
+                <select name="role">
+                  <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>Usuario</option>
+                  <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Administrador</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="label-muted">Estado</label>
+                <select name="status">
+                  <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Activo</option>
+                  <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactivo</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label class="label-muted">Contraseña (dejar vacío para no cambiar)</label>
+                <input type="password" name="password" placeholder="Nueva contraseña">
+              </div>
+              <div class="form-row">
+                <label class="label-muted">Confirmar contraseña</label>
+                <input type="password" name="confirmPassword" placeholder="Confirmar contraseña">
+              </div>
+              <div class="form-row full">
+                <label class="label-muted">Avatar (opcional)</label>
+                <input type="file" name="avatar" accept="image/*">
+                <% if (user.avatar) { %>
+                  <div style="margin-top:8px;"><img src="<%= user.avatar %>" alt="avatar" class="avatar-preview"></div>
+                <% } %>
+              </div>
+              <div class="form-row full">
+                <button type="submit" class="submit-btn">Guardar cambios</button>
+                <a href="/admin/users" class="admin-link" style="background:#e74c3c;">Cancelar</a>
+              </div>
+            </div>
+          </form>
+        </section>
+        <script src="/js/admin-users.js"></script>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

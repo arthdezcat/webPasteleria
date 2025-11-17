@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'Página no encontrada' %> - <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="admin-page">
+  <main style="min-height:80vh;display:flex;align-items:center;justify-content:center;padding:30px;">
+    <div class="card" style="max-width:720px;text-align:center;">
+      <h1 style="font-size:36px;margin-bottom:12px;">404 — Página no encontrada</h1>
+      <p style="color:#555;margin-bottom:18px;">Lo sentimos, la página que buscas no existe o fue movida.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="/" class="admin-link">Ir al inicio</a>
+        <a href="/admin" class="admin-link" style="background:#3498db;">Ir al panel</a>
+      </div>
+      <p style="margin-top:16px;color:#888;font-size:13px;">Si crees que es un error del servidor, revisa la consola del servidor para más detalles.</p>
+    </div>
+  </main>
+</body>
+</html>

@@ -7,6 +7,8 @@ const contactSchema = new mongoose.Schema({
   emailUrl: { type: String },
   whatsappUrl: { type: String },
   facebookUrl: { type: String },
+  messenger: { type: String },
+  messengerUrl: { type: String },
   extraUrl: { type: String },
   footer: { type: String },
   iconColor: { type: String },

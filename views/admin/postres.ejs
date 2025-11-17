@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeliCakes Delia | Administrar Galería</title>
+  <title>DeliCakes Delia | Administrar Postres</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <link rel="icon" href="/img/administracion.png" type="image/png">
-</head>
+  <style>
+    .admin-container-postres { padding: 20px; }
+    .postre-list-admin { list-style: none; padding: 0; }
+    .postre-item-admin { background:#fff; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,.1); padding:16px; margin-bottom:12px; }
+    .postre-item-admin strong { display:block; margin-bottom:6px; }
+    .delete-btn, .submit-btn { padding:8px 12px; border:none; border-radius:6px; color:#fff; cursor:pointer; }
+    .delete-btn { background:#D93025; }
+    .submit-btn { background:#1877F2; }
+    .postre-form { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+    .postre-form input, .postre-form textarea { padding:6px; border-radius:6px; border:1px solid #ccc; }
+  </style>
+  </head>
 <body class="admin-page">
   <header>
     <nav>
       <ul>
         <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
-      <a href="/logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
-      <button type="button" class="theme-toggle" aria-label="Cambiar tema">🌙</button>
         <li><a href="/admin/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
         <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
         <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
@@ -24,9 +33,9 @@
   </header>
 
   <main>
-    <div class="admin-container-galeris">
-      <section class="add-gallery card">
-        <h1>Agregar a la Galería</h1>
+    <div class="admin-container-postres">
+      <section class="add-postre card">
+        <h1>Agregar Postre</h1>
         <% if (typeof errors !== 'undefined' && errors && errors.length) { %>
           <div class="card" style="margin:12px 0;padding:12px;background:#fff6f6;border-left:4px solid #e74c3c;color:#611a15;">
             <ul style="margin:0 0 0 18px;">
@@ -50,12 +59,12 @@
             <% }) %>
           </div>
         <% } %>
-        <form action="/admin/galeria/add" method="post" enctype="multipart/form-data" class="gallery-form service-form-admin">
+        <form action="/admin/postres/add" method="post" enctype="multipart/form-data" class="service-form-admin">
           <div class="form-grid">
             <div class="form-row">
               <label class="label-muted" for="title">Título</label>
               <% const errTitle = (errors || []).find(e => e.param === 'title'); %>
-              <input type="text" id="title" name="title" required value="<%= old && old.title ? old.title : '' %>">
+              <input id="title" type="text" name="title" placeholder="Título" required value="<%= old && old.title ? old.title : '' %>">
               <% if (errTitle) { %>
                 <div class="field-error"><%= errTitle.msg %></div>
               <% } %>
@@ -64,21 +73,16 @@
             <div class="form-row">
               <label class="label-muted" for="price">Precio (opcional)</label>
               <% const errPrice = (errors || []).find(e => e.param === 'price'); %>
-              <input type="number" step="0.01" id="price" name="price" placeholder="0.00" value="<%= old && old.price ? old.price : '' %>">
+              <input id="price" type="number" step="0.01" name="price" placeholder="0.00" value="<%= old && old.price ? old.price : '' %>">
               <% if (errPrice) { %>
                 <div class="field-error"><%= errPrice.msg %></div>
               <% } %>
             </div>
 
-            <div class="form-row">
-              <label class="label-muted" for="category">Categoría</label>
-              <input type="text" id="category" name="category" placeholder="ej: Torta, Pie, Cupcake" value="<%= old && old.category ? old.category : '' %>">
-            </div>
-
             <div class="form-row full">
               <label class="label-muted" for="description">Descripción</label>
               <% const errDescription = (errors || []).find(e => e.param === 'description'); %>
-              <textarea id="description" name="description" required><%= old && old.description ? old.description : '' %></textarea>
+              <textarea id="description" name="description" placeholder="Descripción" required><%= old && old.description ? old.description : '' %></textarea>
               <% if (errDescription) { %>
                 <div class="field-error"><%= errDescription.msg %></div>
               <% } %>
@@ -86,59 +90,54 @@
 
             <div class="form-row">
               <label class="label-muted" for="imageFile">Imagen (archivo)</label>
-              <input type="file" id="imageFile" name="imageFile" accept="image/*">
+              <input id="imageFile" type="file" name="imageFile" accept="image/*">
             </div>
 
             <div class="form-row">
-              <label class="label-muted" for="imageUrl">o URL de la Imagen</label>
-              <input type="url" id="imageUrl" name="imageUrl" value="<%= old && old.imageUrl ? old.imageUrl : '' %>">
+              <label class="label-muted" for="imageUrl">o URL de imagen</label>
+              <input id="imageUrl" type="url" name="imageUrl" placeholder="https://..." value="<%= old && old.imageUrl ? old.imageUrl : '' %>">
             </div>
 
             <div class="form-row full">
-              <button type="submit" class="submit-btn">Añadir a la Galería</button>
+              <button type="submit" class="submit-btn">Añadir Postre</button>
             </div>
           </div>
         </form>
       </section>
 
-      <section class="manage-gallery">
-        <h2>Galería Actual</h2>
-        <ul class="gallery-list-admin">
-          <% galeria.forEach(g => { %>
-            <li class="gallery-item-admin card">
+      <section class="manage-postres">
+        <h2>Postres Registrados</h2>
+        <ul class="postre-list-admin">
+          <% postres.forEach(p => { %>
+            <li class="postre-item-admin card">
               <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
                 <div style="flex:1;min-width:180px;">
-                  <strong style="font-size:18px;"><%= g.title %></strong>
-                  <p style="color:#555;margin-top:6px;"><%= g.description %></p>
-                  <% if (g.price) { %><p style="font-weight:600;color:#333;">Precio: S/ <%= g.price %></p><% } %>
-                  <% if (g.category) { %><p style="font-size:13px;color:#777;">Cat: <%= g.category %></p><% } %>
+                  <strong style="font-size:18px;"><%= p.title %></strong>
+                  <p style="color:#555;margin-top:6px;"> <%= p.description %></p>
+                  <% if (p.price) { %><p style="font-weight:600;color:#333;">Precio: S/ <%= p.price %></p><% } %>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center;">
-                  <form action="/admin/galeria/delete/<%= g._id %>" method="post" style="margin:0;">
+                  <form action="/admin/postres/delete/<%= p._id %>" method="post" style="margin:0;">
                     <button type="submit" class="delete-btn">Eliminar</button>
                   </form>
                 </div>
               </div>
 
               <details style="margin-top:12px;">
-                <summary style="cursor:pointer;color:#007bff;">Editar</summary>
-                <form action="/admin/galeria/update/<%= g._id %>" method="post" enctype="multipart/form-data" class="service-form-admin" style="margin-top:10px;">
+                <summary style="cursor:pointer;color:#007bff;">Editar postre</summary>
+                <form action="/admin/postres/update/<%= p._id %>" method="post" enctype="multipart/form-data" class="service-form-admin" style="margin-top:10px;">
                   <div class="form-grid">
                     <div class="form-row">
                       <label class="label-muted">Título</label>
-                      <input type="text" name="title" value="<%= g.title %>" required>
+                      <input type="text" name="title" value="<%= p.title %>" required>
                     </div>
                     <div class="form-row">
                       <label class="label-muted">Precio (opcional)</label>
-                      <input type="number" step="0.01" name="price" value="<%= g.price || '' %>">
-                    </div>
-                    <div class="form-row">
-                      <label class="label-muted">Categoría</label>
-                      <input type="text" name="category" value="<%= g.category || '' %>">
+                      <input type="number" step="0.01" name="price" value="<%= p.price || '' %>">
                     </div>
                     <div class="form-row full">
                       <label class="label-muted">Descripción</label>
-                      <textarea name="description" required><%= g.description %></textarea>
+                      <textarea name="description" required><%= p.description %></textarea>
                     </div>
                     <div class="form-row">
                       <label class="label-muted">Nueva imagen (archivo)</label>

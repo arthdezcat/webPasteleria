@@ -14,7 +14,7 @@
       <ul>
         <li><a href="/admin"><i class="fas fa-home"></i> Panel</a></li>
         <li><a href="/admin/homeinfo"><i class="fas fa-brush"></i> Inicio</a></li>
-        <li><a href="/admin/services"><i class="fas fa-store"></i> Pastelerías</a></li>
+        <li><a href="/admin/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
         <li><a href="/admin/galeria"><i class="fas fa-images"></i> Galería</a></li>
         <li><a href="/admin/contact"><i class="fas fa-address-book"></i> Contactos</a></li>
         <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Salir</a></li>
@@ -30,23 +30,95 @@
     </div>
 
     <div class="admin-container-servi">
-      <section class="add-service">
+      <!-- Flash messages -->
+      <% if (success_msg && success_msg.length) { %>
+        <div class="card" style="margin:12px 0;padding:12px;background:#e6ffed;border-left:4px solid #2ecc71;color:#064e3b;">
+          <% success_msg.forEach(m => { %>
+            <div><%= m %></div>
+          <% }) %>
+        </div>
+      <% } %>
+      <% if (error_msg && error_msg.length) { %>
+        <div class="card" style="margin:12px 0;padding:12px;background:#fff1f0;border-left:4px solid #e74c3c;color:#611a15;">
+          <% error_msg.forEach(m => { %>
+            <div><%= m %></div>
+          <% }) %>
+        </div>
+      <% } %>
+      <section class="add-service card">
         <h2>Registrar nuevo</h2>
-        <p>Ir al formulario de registro.</p>
-        <a href="/register" class="admin-link">Registrar Usuario</a>
-      </section>
+        <form action="/admin/users/add" method="POST" enctype="multipart/form-data" class="service-form-admin">
+          <div class="form-grid">
+            <div class="form-row">
+              <label class="label-muted" for="fullName">Nombre completo</label>
+              <input id="fullName" type="text" name="fullName" placeholder="Ej: María Pérez" required>
+            </div>
 
-      <section class="manage-services">
+            <div class="form-row">
+              <label class="label-muted" for="username">Usuario</label>
+              <input id="username" type="text" name="username" placeholder="usuario" required>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="email">Email</label>
+              <input id="email" type="email" name="email" placeholder="correo@ejemplo.com" required>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="role">Rol</label>
+              <select id="role" name="role">
+                <option value="user">Usuario</option>
+                <option value="admin">Administrador</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="status">Estado</label>
+              <select id="status" name="status">
+                <option value="active">Activo</option>
+                <option value="inactive">Inactivo</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="password">Contraseña</label>
+              <input id="password" type="password" name="password" placeholder="mínimo 8 caracteres" required>
+            </div>
+
+            <div class="form-row">
+              <label class="label-muted" for="confirmPassword">Confirmar contraseña</label>
+              <input id="confirmPassword" type="password" name="confirmPassword" placeholder="repite la contraseña" required>
+            </div>
+
+            <div class="form-row full">
+              <label class="label-muted" for="avatar">Avatar (opcional)</label>
+              <input id="avatar" type="file" name="avatar" accept="image/*">
+              <p class="form-note">Se puede subir un avatar para identificar más fácilmente al usuario.</p>
+            </div>
+
+            <div class="form-row full">
+              <button type="submit" class="submit-btn">Registrar Usuario</button>
+            </div>
+          </div>
+        </form>
+      </section>
+      <script src="/js/admin-users.js"></script>
+
+      <section class="manage-services card">
         <h2>Usuarios existentes</h2>
         <ul class="services-list-admin">
           <% users.forEach(u => { %>
             <li class="service-item-admin">
               <div class="service-details-admin">
                 <strong><i class="fas fa-user"></i> <%= u.username %></strong>
+                <div style="font-size:14px;color:#666;"> <%= u.email || '' %> • <span style="text-transform:capitalize;"><%= u.role || 'user' %></span> • <span><%= u.status || 'active' %></span></div>
               </div>
-              <form action="/admin/users/delete/<%= u._id %>" method="POST" onsubmit="return confirm('¿Eliminar usuario?');">
-                <button type="submit" class="delete-btn">Eliminar</button>
-              </form>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <a href="/admin/users/edit/<%= u._id %>" class="admin-link" style="background:#3498db;padding:8px 12px;border-radius:6px;color:#fff;text-decoration:none;">Editar</a>
+                <form action="/admin/users/delete/<%= u._id %>" method="POST" onsubmit="return confirm('¿Eliminar usuario?');" style="margin:0;">
+                  <button type="submit" class="delete-btn">Eliminar</button>
+                </form>
+              </div>
             </li>
           <% }) %>
         </ul>

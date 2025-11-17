@@ -16,7 +16,12 @@
       <div class="container">
         <ul class="nav">
           <li><a href="/"><i class="fas fa-home"></i> Inicio</a></li>
+<<<<<<< HEAD
           <li><a href="/galeria"><i class="fas fa-images"></i> Galería</a></li>
+=======
+          <li><a href="/postres"><i class="fas fa-ice-cream"></i> Postres</a></li>
+          <li><a href="/galeria"><i class="fas fa-images"></i> Pasteles</a></li>
+>>>>>>> fix/diseño
           <li><a href="/contact"><i class="fas fa-address-book"></i> Contacto</a></li>
         </ul>
       </div>
@@ -52,6 +57,7 @@
         </div>
 
         <div class="contacts-container">
+<<<<<<< HEAD
           <% contact.forEach(item => { %>
             <div class="contact-item contact-flex">
               <% if (item.iconUrl) { %>
@@ -87,10 +93,109 @@
               </div>
             </div>
           <% }); %>
+=======
+          <% const hasContacts = Array.isArray(contact) && contact.length > 0; %>
+          <% if (hasContacts) { %>
+            <% contact.forEach(item => { %>
+              <article class="contact-item card" aria-label="Contacto <%= item.name %>">
+                <div style="display:flex;gap:14px;align-items:center;">
+                  <div style="flex:0 0 auto;">
+                    <% if (item.iconUrl) { %>
+                      <img src="<%= item.iconUrl %>" alt="Icono <%= item.name %>" class="avatar-preview" data-bg="<%= item.iconColor || '' %>">
+                    <% } else { %>
+                      <% const initials = (item.name || '').split(' ').map(s=>s[0]).join('').slice(0,2).toUpperCase(); %>
+                      <div class="avatar-preview" data-bg="<%= item.iconColor || '' %>" style="display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;"><%= initials %></div>
+                    <% } %>
+                  </div>
+
+                  <div style="flex:1;text-align:left;">
+                    <h3 class="contact-name"><%= item.name %></h3>
+                    <p class="contact-meta">
+                      <a href="<%= item.emailUrl || ('mailto:' + (item.email || '')) %>" class="social-link" title="Enviar email"><i class="fas fa-envelope"></i> <span><%= item.email || '—' %></span></a>
+                    </p>
+                    <p class="contact-meta">
+                      <% if (item.whatsappUrl) { %>
+                        <a href="<%= item.whatsappUrl %>" class="social-link" target="_blank" title="Abrir WhatsApp"><i class="fab fa-whatsapp"></i> <span><%= item.telefono %></span></a>
+                      <% } else if (item.telefono) { %>
+                        <a href="tel:<%= item.telefono %>" class="social-link" title="Llamar"><i class="fas fa-phone"></i> <span><%= item.telefono %></span></a>
+                      <% } else { %>
+                        <span class="muted"><i class="fas fa-phone"></i> —</span>
+                      <% } %>
+                    </p>
+
+                    <div class="contact-actions" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">
+                      <% if (item.whatsappUrl) { %>
+                        <a href="<%= item.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                      <% } %>
+                      <% if (item.email) { %>
+                        <a href="mailto:<%= item.email %>" class="social-btn gmail" title="Email"><i class="fas fa-envelope"></i></a>
+                      <% } %>
+                      <% if (item.messengerUrl) { %>
+                        <a href="<%= item.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+                      <% } %>
+                      <% if (item.facebookUrl) { %>
+                        <a href="<%= item.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                      <% } %>
+                      <% if (item.extraUrl) { %>
+                        <a href="<%= item.extraUrl %>" target="_blank" class="social-btn" style="background:#6c757d;">Más info</a>
+                      <% } %>
+                    </div>
+
+                    <% if (item.footer) { %>
+                      <p style="opacity:0.85;margin-top:8px;"> <%= item.footer %> </p>
+                    <% } %>
+                  </div>
+                </div>
+              </article>
+            <% }); %>
+          <% } else { %>
+            <div style="min-height:120px;display:flex;align-items:center;justify-content:center;">No hay contactos registrados.</div>
+          <% } %>
+>>>>>>> fix/diseño
         </div>
       </section>
     </div>
   </main>
+<<<<<<< HEAD
   <%- include('../partials/footer') %>
+=======
+
+  <footer>
+    <% const cf = (typeof contact !== 'undefined' && contact && contact.length ? contact[0] : null); %>
+    <div class="footer-social">
+      <div class="social-links">
+        <% if (cf && cf.emailUrl) { %>
+          <a href="<%= cf.emailUrl %>" class="social-btn gmail" title="Email">
+            <i class="fas fa-envelope"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.facebookUrl) { %>
+          <a href="<%= cf.facebookUrl %>" target="_blank" class="social-btn facebook" title="Facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.messengerUrl) { %>
+          <a href="<%= cf.messengerUrl %>" target="_blank" class="social-btn messenger" title="Messenger">
+            <i class="fab fa-facebook-messenger"></i>
+          </a>
+        <% } %>
+        <% if (cf && cf.whatsappUrl) { %>
+          <a href="<%= cf.whatsappUrl %>" target="_blank" class="social-btn whatsapp" title="WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        <% } %>
+      </div>
+      <p>&copy; <%= (homeInfo && homeInfo.brandName) || 'DeliCakes Delia' %></p>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      document.querySelectorAll('[data-bg]').forEach(function(el){
+        var c = el.getAttribute('data-bg');
+        if (c) el.style.background = c;
+      });
+    });
+  </script>
+>>>>>>> fix/diseño
 </body>
 </html>

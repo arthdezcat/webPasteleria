@@ -6,10 +6,12 @@ exports.registerAdmin = async (req, res) => {
   try {
     const admin = new Admin({ username, password });
     await admin.save();
+    req.flash('success_msg', 'Administrador registrado. Ya puedes iniciar sesión.');
     res.redirect('/login');
   } catch (error) {
     console.error(error);
-    res.status(500).send('Error al registrar el administrador');
+    req.flash('error_msg', 'Error al registrar el administrador');
+    res.redirect('/register');
   }
 };
 
