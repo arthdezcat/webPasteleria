@@ -15,10 +15,7 @@ router.use(async (req, res, next) => {
 });
 
 router.get('/', (req, res) => res.render('pages/index'));
-<<<<<<< HEAD
-=======
 router.get('/postres', postresController.getPostres);
->>>>>>> fix/diseño
 router.get('/contact', contactController.getContact);
 router.get('/galeria', galeriaController.getGaleria);
 

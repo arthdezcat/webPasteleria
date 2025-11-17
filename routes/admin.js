@@ -11,14 +11,11 @@ const userAdminController = require('../controllers/userAdminControllers');
 
 // Proteger rutas del panel de administración
 router.use(authMiddleware.isAuthenticated);
-<<<<<<< HEAD
-=======
 // Panel de administración para postres
 router.get('/postres', async (req, res) => {
   const postres = await require('../models/Postre').find();
   res.render('admin/postres', { postres, old: {}, errors: [] });
 });
->>>>>>> fix/diseño
 
 router.get('/contact', async (req, res) => {
   const contact = await require('../models/Contact').find();
